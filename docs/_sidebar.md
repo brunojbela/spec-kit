@@ -1,10 +1,5 @@
 - [Início](README.md)
 
-- **Governança**
-  - [PRD](PRD.md)
-  - [ORCHESTRATION ledger](ORCHESTRATION.md)
-  - [SECURITY_LOG](SECURITY_LOG.md)
-
 - **Fundamentos**
   - [01-harnesses](01-harnesses.md)
   - [02-agents](02-agents.md)

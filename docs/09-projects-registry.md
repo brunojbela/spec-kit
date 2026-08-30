@@ -33,4 +33,4 @@ Isso permite **portar contexto entre harnesses**. Exemplo real: o usuário **ini
 2. Alterações gravam no ledger com esse `session_id`/`harness`.
 3. Se o usuário continua em outro harness, o mesmo `session_id` é retomado e o contexto (PRD, ledger, AGENTS.md) é carregado — sem perder o fio.
 
-> Essa ponte é a base para a **central de controle** (ver `control-center.orchestration.json`): watchdog detecta a sessão e o `trigger-dev` sinaliza o dono, independente do harness.
+> Essa ponte é a base para a **central de controle** (projeto separado `central-de-controle`, integração pendente): watchdog detecta a sessão e o `trigger-dev` sinaliza o dono, independente do harness.

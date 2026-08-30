@@ -20,7 +20,7 @@ test('T18: writeMirrored gera JSON+MD espelhados e válidos por schema', () => {
 });
 
 test('T18: renderPrdMd espelha TODOS os campos sem truncamento', () => {
-  const prd = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'docs/PRD.json'), 'utf8'));
+  const prd = JSON.parse(readFileSync(join(import.meta.dirname, 'fixtures', 'prd.sample.json'), 'utf8'));
   const md = renderPrdMd(prd);
   for (const t of prd.tasks) {
     assert.ok(md.includes(t.what.replace(/\|/g, '\\|')), `what de ${t.id} truncado/ausente`);

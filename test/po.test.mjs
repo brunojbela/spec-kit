@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { beforeTaskSync, PLAN_BY_LEVEL, LEVELS } from '../lib/po.js';
 import { DIFFICULTY_MODEL } from '../lib/central.js';
 
-const prd = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'docs/PRD.json'), 'utf8'));
+const prd = JSON.parse(readFileSync(join(import.meta.dirname, 'fixtures', 'prd.sample.json'), 'utf8'));
 
 test('T24/T26: plano definido para os 5 níveis trivial→extremo', () => {
   assert.deepEqual(LEVELS, ['trivial', 'fácil', 'médio', 'difícil', 'extremamente difícil']);

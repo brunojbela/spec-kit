@@ -51,4 +51,4 @@ Cada hook tem um `evento` nativo do harness, uma `ação` e um `porquê`. O adap
 ## Continuidade entre harnesses
 Cada sessão tem **`session_id` estável + `harness`**, registrados no ledger e `projectsRegistry`. Permite retrocompatibilidade: iniciar no Claude e terminar no opencode (ou qualquer combinação dos 8, dezenas de combos). Ver `09-projects-registry.md`.
 
-> Events alimentam dashboard e control-center (`control-center.orchestration.json`).
+> Events alimentam dashboard e control-center (projeto separado, integração pendente).

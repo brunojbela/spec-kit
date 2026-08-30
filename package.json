@@ -29,6 +29,14 @@
     "harness"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/brunojbela/spec-kit.git"
+  },
+  "homepage": "https://brunojbela.github.io/spec-kit/",
+  "bugs": {
+    "url": "https://github.com/brunojbela/spec-kit/issues"
+  },
   "engines": {
     "node": ">=20"
   },

@@ -10,8 +10,8 @@ test('schemas carregam todos os 7', () => {
   assert.deepEqual(schemaNames().sort(), ['agent', 'doc-sync', 'model-catalog', 'orchestration', 'prd', 'project-context', 'security']);
 });
 
-test('prd.schema valida docs/PRD.json real', () => {
-  const prd = JSON.parse(readFileSync(join(root, 'docs/PRD.json'), 'utf8'));
+test('prd.schema valida PRD de exemplo', () => {
+  const prd = JSON.parse(readFileSync(join(root, 'test', 'fixtures', 'prd.sample.json'), 'utf8'));
   const { valid, errors } = validate('prd', prd);
   assert.ok(valid, errors.join('; '));
 });

@@ -25,7 +25,7 @@ test('T32: _sidebar linka todos os mds do site (agents, skills, fundamentos, PRD
 test('T32: todos os links do sidebar resolvem para arquivos existentes', () => {
   const sidebar = readFileSync(join(DOCS, '_sidebar.md'), 'utf8');
   const links = [...sidebar.matchAll(/\]\(([^)]+)\)/g)].map((m) => m[1]);
-  assert.ok(links.length >= 62, `esperados >=62 links, encontrados ${links.length}`);
+  assert.ok(links.length >= 60, `esperados >=60 links, encontrados ${links.length}`);
   for (const l of links) assert.ok(existsSync(join(DOCS, l)), `broken: ${l}`);
 });
 
