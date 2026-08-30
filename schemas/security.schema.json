@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec-kit.dev/schemas/security.schema.json",
+  "title": "SECURITY_LOG",
+  "type": "object",
+  "required": ["project", "updatedAt", "violations"],
+  "properties": {
+    "project": { "type": "string" },
+    "updatedAt": { "type": "string" },
+    "violations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["item", "severity", "file", "timestamp", "status"],
+        "properties": {
+          "item": { "type": "string" },
+          "severity": { "enum": ["baixa", "média", "alta", "crítica"] },
+          "file": { "type": "string" },
+          "line": { "type": "number" },
+          "evidence": { "type": "string" },
+          "status": { "enum": ["aberta", "corrigida", "falsa-positivo"] },
+          "action": { "enum": ["bloqueado", "alerta", "liberado"] },
+          "timestamp": { "type": "string" }
+        }
+      }
+    }
+  }
+}

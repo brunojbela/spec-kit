@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec-kit.dev/schemas/agent.schema.json",
+  "title": "Agent (template global ou squad local gerado)",
+  "type": "object",
+  "required": ["id", "friendlyName", "cargo", "funcao", "how", "tier"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "friendlyName": { "type": "string" },
+    "cargo": { "type": "string" },
+    "funcao": { "type": "string" },
+    "tier": { "enum": ["global", "local"] },
+    "type": { "type": "string" },
+    "role": { "type": "string" },
+    "scope": { "type": "array", "items": { "type": "string" } },
+    "skills": { "type": "array", "items": { "type": "string" } },
+    "responsibilities": { "type": "array", "items": { "type": "string" } },
+    "prohibitions": { "type": "array", "items": { "type": "string" } },
+    "how": { "type": "string", "minLength": 10 },
+    "usesContext7": { "type": "boolean" },
+    "modes": { "type": "string" },
+    "stack": { "type": "array", "items": { "type": "string" } },
+    "context7": { "type": "array", "items": { "type": "string" } }
+  }
+}

@@ -1,0 +1,99 @@
+[
+  {
+    "id": "claude-opus-4-8",
+    "provider": "anthropic",
+    "contextWindow": 1000000,
+    "inputPrice": 5,
+    "outputPrice": 25,
+    "sweBenchVerified": 88.6,
+    "sweBenchPro": 69.2,
+    "speed": "lento",
+    "strengths": [
+      "refator 50+ arquivos",
+      "debug profundo",
+      "1M sem surcharge"
+    ],
+    "weaknesses": [
+      "custo alto"
+    ]
+  },
+  {
+    "id": "claude-sonnet-4-6",
+    "provider": "anthropic",
+    "contextWindow": 1000000,
+    "inputPrice": 3,
+    "outputPrice": 15,
+    "sweBenchVerified": 79.6,
+    "sweBenchPro": 58.1,
+    "speed": "médio",
+    "strengths": [
+      "volume alto",
+      "batch $1.5/$7.5"
+    ],
+    "weaknesses": []
+  },
+  {
+    "id": "claude-haiku-4-5",
+    "provider": "anthropic",
+    "contextWindow": 200000,
+    "inputPrice": 1,
+    "outputPrice": 5,
+    "sweBenchVerified": 73.3,
+    "sweBenchPro": 39.45,
+    "speed": "rápido",
+    "strengths": [
+      "edições rápidas",
+      "subagents",
+      "$0.13/ponto"
+    ],
+    "weaknesses": [
+      "raciocínio limitado"
+    ]
+  },
+  {
+    "id": "gpt-5.6-sol",
+    "provider": "openai",
+    "contextWindow": 1000000,
+    "inputPrice": 5,
+    "outputPrice": 30,
+    "sweBenchVerified": 96.2,
+    "sweBenchPro": 64.6,
+    "speed": "médio",
+    "strengths": [
+      "top Verified"
+    ],
+    "weaknesses": [
+      "$30 output"
+    ]
+  },
+  {
+    "id": "claude-fable-5",
+    "provider": "anthropic",
+    "contextWindow": 1000000,
+    "inputPrice": 10,
+    "outputPrice": 50,
+    "sweBenchVerified": 95.0,
+    "sweBenchPro": 80.3,
+    "speed": "lento",
+    "strengths": [
+      "top Claude"
+    ],
+    "weaknesses": [
+      "custo muito alto"
+    ]
+  },
+  {
+    "id": "kime-k3",
+    "provider": "moonshot",
+    "contextWindow": 200000,
+    "inputPrice": 2,
+    "outputPrice": 8,
+    "sweBenchVerified": 93.4,
+    "sweBenchPro": 60,
+    "speed": "rápido",
+    "strengths": [
+      "custo-benefício"
+    ],
+    "weaknesses": []
+  }
+]

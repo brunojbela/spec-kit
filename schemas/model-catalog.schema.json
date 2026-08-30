@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec-kit.dev/schemas/model-catalog.schema.json",
+  "title": "Model catalog",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "required": ["id", "provider", "inputPrice", "outputPrice", "sweBenchVerified", "speed"],
+    "properties": {
+      "id": { "type": "string" },
+      "provider": { "type": "string" },
+      "contextWindow": { "type": "number" },
+      "inputPrice": { "type": "number" },
+      "outputPrice": { "type": "number" },
+      "sweBenchVerified": { "type": "number" },
+      "sweBenchPro": { "type": "number" },
+      "speed": { "enum": ["lento", "médio", "rápido"] },
+      "strengths": { "type": "array", "items": { "type": "string" } },
+      "weaknesses": { "type": "array", "items": { "type": "string" } }
+    }
+  }
+}

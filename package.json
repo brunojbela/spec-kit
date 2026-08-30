@@ -1,0 +1,40 @@
+{
+  "name": "spec-kit",
+  "version": "0.1.0",
+  "description": "Spec-Driven Development Kit — catálogo global de agents/skills + generators de squad local especialista, multi-harness (8 alvos), governança PRD+ledger, Ralph Loop, docs 100%, pentest reverso.",
+  "type": "module",
+  "bin": {
+    "spec-kit": "bin/spec-kit.js"
+  },
+  "main": "lib/index.js",
+  "files": [
+    "bin",
+    "catalog",
+    "generators",
+    "harnesses",
+    "schemas",
+    "models",
+    "lib",
+    "mcp-servers"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "docs:serve": "docsify serve docs"
+  },
+  "keywords": [
+    "spec-driven-development",
+    "orchestration",
+    "agents",
+    "skills",
+    "harness"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "commander": "^14.0.3",
+    "docsify": "^5.0.0"
+  }
+}

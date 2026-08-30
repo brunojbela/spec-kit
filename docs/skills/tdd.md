@@ -1,0 +1,20 @@
+# TDD (`tdd`)
+
+**Cargo:** Engenheiro de Testes
+**Função:** Testes fixos de regra de negócio antes do código
+**Tier:** global (template → local especialista via Context7) · **Gatilho:** antes de qualquer código (obrigatório)
+
+## O que entrega
+Testes fixos de regra de negócio antes do código
+
+## Quando age (gatilho)
+antes de qualquer código (obrigatório)
+
+## Como age (steps)
+1. Lê regra de negócio do PRD. 2. Escreve teste FIXO que valida exatamente a regra (RED). 3. Só então implementa código mínimo (GREEN). 4. Refatora. 5. Se teste falhar depois → corrige causa raiz; só altera teste se regra mudar.
+
+## Onde vive (por harness)
+Ver `01-harnesses.md` e `03-skills.md`. Adapters copiam para a pasta de skills de cada harness.
+
+## Notas
+Template do catálogo global; o generator instancia a versão especialista do projeto. `usesContext7: quando aplicável`.

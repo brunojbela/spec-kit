@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec-kit.dev/schemas/doc-sync.schema.json",
+  "title": "DOC_SYNC manifest",
+  "type": "object",
+  "required": ["project", "generatedAt", "items"],
+  "properties": {
+    "project": { "type": "string" },
+    "generatedAt": { "type": "string" },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "module", "kind", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "module": { "type": "string" },
+          "feature": { "type": "string" },
+          "case": { "type": "string" },
+          "class": { "type": ["string", "null"] },
+          "method": { "type": ["string", "null"] },
+          "imports": { "type": "array", "items": { "type": "string" } },
+          "requests": { "type": "array", "items": { "type": "string" } },
+          "packages": { "type": "array", "items": { "type": "string" } },
+          "kind": { "enum": ["technical", "functional"] },
+          "status": { "enum": ["pendente", "documentado"] },
+          "docPath": { "type": "string" },
+          "owner": { "type": "string" }
+        }
+      }
+    }
+  }
+}

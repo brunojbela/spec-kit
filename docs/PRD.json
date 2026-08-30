@@ -1,0 +1,661 @@
+{
+  "metadata": {
+    "project": "spec-kit",
+    "displayName": "Spec-Driven Development Kit",
+    "version": "0.1.0",
+    "owner": "bbela",
+    "language": "pt-BR",
+    "createdAt": "2026-08-30",
+    "harness": "multi (opencode/claude/cursor/codex/gemini/agy/antigravity 2.0/ide)",
+    "status": "v0.1.0 — pack spec-kit implementado (33/33 tasks concluídas, 94 testes passando, TDD)",
+    "source": "spec-kit.orchestration.json + docs/01-10 + control-center.orchestration.json"
+  },
+  "sharedContext": {
+    "objetivo": "Construir o pack npm spec-kit: catálogo global generalista (templates) + generators de squad local 100% especialista por projeto (Context7), orquestrado por PO que entrevista, classifica dificuldade e escolhe modelo por task, com governança PRD+ledger JSON+MD, Ralph Loop por task, docs 100% técnico+funcional com DOC_SYNC, pentest reverso combinado, multi-harness 8 alvos.",
+    "principios": [
+      "Arquitetura limpa/organizada (clean architecture adaptada por projeto)",
+      "Código pouco verboso, direto, seguindo ESLint",
+      "Testes unitários em TODAS as linguagens + TDD quando fizer sentido",
+      "QA forte e documentação 100% obrigatória",
+      "Cobertura total de domínios: performance, SEO, i18n, UX/UI, design-system, design-patterns, media-buying, security",
+      "Pentest reverso combinado (agente + hook gate + checklist + governance)",
+      "Orquestração de TODAS as alterações via ledger de governança",
+      "Catálogo GLOBAL generalista + squad LOCAL 100% especialista (multiagent)",
+      "Squad usa Context7 para docs específicas de stack/versão",
+      "PO entrevista o dev e assume papel de gerente de projeto (spec completa)",
+      "Greenfield (spec-first) ≠ legado (verify-docs -> doc-gen -> spec/change)"
+    ],
+    "stackPack": {
+      "runtime": "Node.js >=20, TypeScript",
+      "cli": "bin/spec-kit",
+      "tests": "vitest",
+      "lint": "eslint",
+      "docs": "docsify (docs/)",
+      "distribution": "npm package spec-kit"
+    },
+    "stackAlvo": {
+      "role": "fullstack",
+      "languages": [
+        "php",
+        "javascript",
+        "typescript",
+        "python",
+        "css",
+        "html",
+        "linguagens proprietárias",
+        "wordpress"
+      ],
+      "frameworks": {
+        "backend": [
+          "laravel",
+          "php (puro)",
+          "python (django/fastapi)",
+          "wordpress"
+        ],
+        "frontend": [
+          "react",
+          "vuejs",
+          "angular",
+          "inertia"
+        ],
+        "styling": [
+          "tailwind css",
+          "bootstrap css"
+        ],
+        "markup": [
+          "html5",
+          "css3"
+        ]
+      },
+      "testing": [
+        "phpunit",
+        "playwright",
+        "unit tests (todas as linguagens)"
+      ],
+      "devops": {
+        "ci_cd": true,
+        "container": [
+          "docker"
+        ],
+        "clouds": [
+          "aws",
+          "gcloud",
+          "azure",
+          "vercel",
+          "oracle",
+          "dokploy"
+        ]
+      },
+      "architecturePref": "clean architecture (adaptada por projeto)",
+      "verbosityPref": "pouco verboso, direto ao ponto, bem escrito"
+    },
+    "harnesses": [
+      "opencode",
+      "antigravity-2.0",
+      "antigravity-cli (agy)",
+      "antigravity-ide",
+      "gemini-cli",
+      "claude-code",
+      "codex",
+      "cursor"
+    ],
+    "projectModes": {
+      "greenfield": {
+        "status": "DEFINIDO",
+        "flow": "spec-first (via entrevista PO)",
+        "steps": [
+          "PO entrevista -> Spec/PRD",
+          "Plan",
+          "Tasks",
+          "Implement (squad)",
+          "Verify",
+          "Ship"
+        ],
+        "docArtifact": "init gera AGENTS.md + PROJECT_CONTEXT"
+      },
+      "legacy": {
+        "status": "DEFINIDO",
+        "flow": "verify-docs -> doc-gen -> spec/change",
+        "steps": [
+          "verificar docs",
+          "SE faltar: doc-gen",
+          "PO extrai spec (reversa) + entrevista",
+          "testes de caracterização",
+          "SDD (Plan->Tasks->Implement->Verify->Ship)"
+        ],
+        "docArtifact": "analyze cria/atualiza AGENTS.md + PROJECT_CONTEXT"
+      },
+      "sharedRule": "Todo projeto 100% documentado; fonte de verdade = AGENTS.md + docs/PROJECT_CONTEXT.md."
+    },
+    "governance": "PRD.json+md (sharedContext+tasks) + ORCHESTRATION.json+md + SECURITY_LOG.json+md espelhados; ledger preenche via hook ledger-record",
+    "docSync": "DOC_SYNC.json guia → multisubagents 1 func por agente → technical/functional",
+    "modelSelection": "PO usa models/catalog.json local hoje; pendente integração via central-de-controle MCP GET /models/recommend quando central finalizar (spec-kit integration.controlCenter PENDENTE)"
+  },
+  "features": [
+    {
+      "id": "F01",
+      "name": "Pack NPM Scaffold",
+      "goal": "Estrutura do pacote instalável"
+    },
+    {
+      "id": "F02",
+      "name": "Catálogo Global — Agents",
+      "goal": "7 agents globais templates + 8 squad local + 1 exemplo, todos com nome amigável e how definido"
+    },
+    {
+      "id": "F03",
+      "name": "Catálogo Global — Skills",
+      "goal": "36 skills templates com gatilho/steps, segundo plano via hooks"
+    },
+    {
+      "id": "F04",
+      "name": "Harness Adapters (8 alvos)",
+      "goal": "Adapters que copiam agents/skills/hooks/commands para cada harness"
+    },
+    {
+      "id": "F05",
+      "name": "Runtime — Hooks/Events/Commands/Sessions",
+      "goal": "7 hooks + 4 events canônicos + 5 commands (4 SDD + models refresh) + session bootstrap em todos harnesses"
+    },
+    {
+      "id": "F06",
+      "name": "Governança",
+      "goal": "PRD/ORCHESTRATION/SECURITY_LOG JSON+MD espelhados"
+    },
+    {
+      "id": "F07",
+      "name": "Documentação 100% + Doc Sync + Doc-Gen Pipeline",
+      "goal": "Garantir 100% documentado técnico+funcional, casos de uso com methods/class/component"
+    },
+    {
+      "id": "F08",
+      "name": "Fluxo SDD + Dia a Dia + PO Protocol",
+      "goal": "Fluxo canônico + before-task-sync + classificação dificuldade + matriz modelo por situação"
+    },
+    {
+      "id": "F09",
+      "name": "Contexto Pessoal + Projects Registry",
+      "goal": "AGENTS.md GLOBAL (memória viva) + entrevista first-run + mapeamento pasta projects + continuidade cross-harness"
+    },
+    {
+      "id": "F10",
+      "name": "Segurança — Pentest Reverso",
+      "goal": "Checklist 20 itens + security-gate bloqueante + SECURITY_LOG"
+    },
+    {
+      "id": "F11",
+      "name": "Ralph Loop",
+      "goal": "Loop iterativo por task (3-5 iterações, .sh chat limpo, validação em testes fixos)"
+    },
+    {
+      "id": "F12",
+      "name": "Integração Central de Controle + Dashboard",
+      "goal": "Central via de duas mãos (monitora/audita + recomenda modelo por harness); dashboard consome ledger"
+    },
+    {
+      "id": "F13",
+      "name": "Docs Site + Navegação",
+      "goal": "Docsify com _sidebar, README linkado, per-agent/per-skill files"
+    },
+    {
+      "id": "F14",
+      "name": "Model Catalog",
+      "goal": "Catálogo versionado de modelos/benchmarks para PO"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "T01",
+      "feature": "F01",
+      "what": "Scaffold pack: package.json (name spec-kit, bin spec-kit), pastas catalog/agents, catalog/skills, generators/, harnesses/<alvo>/, schemas/, models/, mcp-servers/",
+      "why": "Base instalável; sem isso nada é distribuído",
+      "acceptanceCriteria": "package.json válido, bin/spec-kit executável, npm pack dry-run ok, estrutura criada",
+      "difficulty": "trivial",
+      "model": "claude-haiku-4-5",
+      "dependsOn": [],
+      "status": "concluída"
+    },
+    {
+      "id": "T02",
+      "feature": "F01",
+      "what": "CLI spec-kit (commander): comandos init, analyze, verify, init-projects, models refresh — com --help e --version",
+      "why": "Interface do usuário; orquestra generators e adapters",
+      "acceptanceCriteria": "spec-kit --help lista 5 comandos; testes unitários dos parsers",
+      "difficulty": "fácil",
+      "model": "claude-haiku-4-5",
+      "dependsOn": [
+        "T01"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T03",
+      "feature": "F01",
+      "what": "Schemas JSON: prd.schema.json, orchestration.schema.json, security.schema.json, doc-sync.schema.json, project-context.schema.json",
+      "why": "Validação determinística para PRD/ledger gerados",
+      "acceptanceCriteria": "schemas validam PRD.json e ORCHESTRATION.json de exemplo; teste de schema ok",
+      "difficulty": "médio",
+      "model": "claude-sonnet-4-6",
+      "dependsOn": [
+        "T01"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T04",
+      "feature": "F02",
+      "what": "Materializar catálogo global de agents (7) como arquivos markdown/templates em catalog/agents/ + registros em spec-kit.orchestration.json",
+      "why": "Templates reutilizáveis generalistas",
+      "acceptanceCriteria": "7 arquivos em catalog/agents/*.md com frontmatter id/friendlyName/cargo/funcao/how; teste verifica 7",
+      "difficulty": "médio",
+      "model": "claude-sonnet-4-6",
+      "dependsOn": [
+        "T01"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T05",
+      "feature": "F02",
+      "what": "Generator de squad local (8: po, techlead, dev-senior/pleno/junior, qa, security, docs) via Context7 por stack",
+      "why": "Instanciar especialistas por projeto",
+      "acceptanceCriteria": "generator recebe stack (ex: laravel+react) e gera .opencode/.claude/.cursor/... com agents especialistas; teste com 2 stacks (laravel13+react19 e python+fastapi) cobrindo os 8 agents; todo agent gerado valida contra schema",
+      "difficulty": "difícil",
+      "model": "claude-opus-4-8",
+      "dependsOn": [
+        "T03",
+        "T04"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T06",
+      "feature": "F02",
+      "what": "Example agent domain-engine (gestor-projects) como template de extensão por domínio",
+      "why": "Provar extensibilidade",
+      "acceptanceCriteria": "arquivo catalog/agents/domain-engine.md com scope app/Core/Domain e proibições; teste de exemplo",
+      "difficulty": "fácil",
+      "model": "claude-haiku-4-5",
+      "dependsOn": [
+        "T04"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T07",
+      "feature": "F03",
+      "what": "Materializar 36 skills templates em catalog/skills/<id>/SKILL.md com frontmatter name/description/gatilho/steps",
+      "why": "Catálogo global segundo plano",
+      "acceptanceCriteria": "36 pastas com SKILL.md válidos (name regex ^[a-z0-9]+(-[a-z0-9]+)*$); teste conta 36",
+      "difficulty": "médio",
+      "model": "claude-sonnet-4-6",
+      "dependsOn": [
+        "T01"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T08",
+      "feature": "F03",
+      "what": "Instanciação local de skills por stack (Context7) + wiring com agents",
+      "why": "Tornar skills especialistas",
+      "acceptanceCriteria": "generator mapeia stack→skills (laravel/react/etc.) e registra no AGENTS.md; teste verifica wiring",
+      "difficulty": "médio",
+      "model": "claude-sonnet-4-6",
+      "dependsOn": [
+        "T05",
+        "T07"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T09",
+      "feature": "F04",
+      "what": "Adapter opencode (agents→~/.config/opencode/agents + .opencode/agents, skills→.opencode/skills, commands→.opencode/commands, hooks→plugins .opencode/plugins)",
+      "why": "Suporte harness opencode",
+      "acceptanceCriteria": "adapter copia e valida com opencode docs; teste dry-run",
+      "difficulty": "médio",
+      "model": "claude-sonnet-4-6",
+      "dependsOn": [
+        "T04",
+        "T07"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T10",
+      "feature": "F04",
+      "what": "Adapter claude-code (~/.claude/agents, .claude/skills, .claude/commands, settings.json hooks)",
+      "why": "Suporte harness claude",
+      "acceptanceCriteria": "adapter gera settings.json hooks SessionStart/PreToolUse etc.; teste",
+      "difficulty": "médio",
+      "model": "claude-sonnet-4-6",
+      "dependsOn": [
+        "T04",
+        "T07"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T11",
+      "feature": "F04",
+      "what": "Adapter cursor (.cursor/agents, .cursor/skills, .cursor/hooks.json, .cursor/rules/*.mdc)",
+      "why": "Suporte harness cursor",
+      "acceptanceCriteria": "adapter gera hooks.json v1 + compat dirs; teste",
+      "difficulty": "médio",
+      "model": "claude-sonnet-4-6",
+      "dependsOn": [
+        "T04",
+        "T07"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T12",
+      "feature": "F04",
+      "what": "Adapter codex (.agents/skills + .codex/skills + .codex/hooks.json + AGENTS.md)",
+      "why": "Suporte harness codex",
+      "acceptanceCriteria": "adapter suporta ambos .agents e .codex; teste",
+      "difficulty": "médio",
+      "model": "claude-sonnet-4-6",
+      "dependsOn": [
+        "T04",
+        "T07"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T13",
+      "feature": "F04",
+      "what": "Adapters gemini-cli (.gemini/commands/*.toml, GEMINI.md, skills) e agy/antigravity (plugins em ~/.gemini/antigravity-cli/plugins, ~/.gemini/config/skills, ~/.gemini/antigravity/skills)",
+      "why": "Suporte família Google (3 harnesses)",
+      "acceptanceCriteria": "3 adapters geram global/ws skills e plugin hooks.json; teste por harness (gemini-cli, agy, antigravity-ide) comparando caminhos gerados com snapshot esperado",
+      "difficulty": "difícil",
+      "model": "claude-opus-4-8",
+      "dependsOn": [
+        "T04",
+        "T07"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T14",
+      "feature": "F05",
+      "what": "Implementar 7 hooks com matriz por harness (session.classify, personal-interview, inject-orchestration, security-gate, ledger-record, docs-check, docs.sync)",
+      "why": "Garantir organism vivo + governança + docs em todos harnesses",
+      "acceptanceCriteria": "matriz 7 hooks × 8 harnesses = 56 mapeamentos para evento nativo por harness (ver 04-runtime.md); teste automatizado por par hook×harness",
+      "difficulty": "difícil",
+      "model": "claude-opus-4-8",
+      "dependsOn": [
+        "T03",
+        "T09",
+        "T10",
+        "T11",
+        "T12",
+        "T13"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T15",
+      "feature": "F05",
+      "what": "Implementar 4 events canônicos (change.recorded, security.violation, project.instantiated, session.started) consumidos por ledger/dashboard/control-center",
+      "why": "Comunicação squad + observabilidade",
+      "acceptanceCriteria": "events emitidos nos hooks corretos; teste de contrato payload",
+      "difficulty": "médio",
+      "model": "claude-sonnet-4-6",
+      "dependsOn": [
+        "T03",
+        "T14"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T16",
+      "feature": "F05",
+      "what": "Implementar 4 commands SDD (init, analyze, verify, init-projects) end-to-end (PO entrevista → PRD → squad); 5º comando models refresh em T33",
+      "why": "Fluxo SDD greenfield vs legado",
+      "acceptanceCriteria": "spec-kit init cria AGENTS.md+PRD.json válidos por schema; analyze gera DOC_SYNC.json+char-tests mock; verify retorna exit 0/1 conforme gates; testes e2e dos 4 fluxos",
+      "difficulty": "difícil",
+      "model": "claude-opus-4-8",
+      "dependsOn": [
+        "T02",
+        "T05",
+        "T08",
+        "T14",
+        "T15"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T17",
+      "feature": "F05",
+      "what": "Session bootstrap + inject-orchestration (da 2ª interação) + session_id/harness cross-harness",
+      "why": "Continuidade entre harnesses",
+      "acceptanceCriteria": "session_id estável + harness gravados no ledger; teste inicia no claude e retoma no opencode",
+      "difficulty": "difícil",
+      "model": "claude-opus-4-8",
+      "dependsOn": [
+        "T14",
+        "T15"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T18",
+      "feature": "F06",
+      "what": "Gerar PRD/ORCHESTRATION/SECURITY_LOG como JSON+MD espelhados (schemas + render MD legível)",
+      "why": "Governança rastreável",
+      "acceptanceCriteria": "docs/PRD.json+md, ORCHESTRATION.json+md, SECURITY_LOG.json+md válidos e espelhados; teste compara JSON vs MD",
+      "difficulty": "médio",
+      "model": "claude-sonnet-4-6",
+      "dependsOn": [
+        "T03"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T19",
+      "feature": "F06",
+      "what": "Hook ledger-record pós-alteração preenche ORCHESTRATION.json (session_id, harness, task_id, model, tokens, prompts, metrics)",
+      "why": "Rastreabilidade automática",
+      "acceptanceCriteria": "após edit/write, ledger append com campos obrigatórios; teste simula alteração",
+      "difficulty": "médio",
+      "model": "claude-sonnet-4-6",
+      "dependsOn": [
+        "T14",
+        "T18"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T20",
+      "feature": "F07",
+      "what": "Implementar DOC_SYNC.json como manifest guia (módulo→feature→caso→classe→method/imports/requests/packages)",
+      "why": "Garantir 100% cobertura documentável",
+      "acceptanceCriteria": "DOC_SYNC.json com todos itens + status pendente/documentado; teste em projeto legado mock",
+      "difficulty": "médio",
+      "model": "claude-sonnet-4-6",
+      "dependsOn": [
+        "T03"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T21",
+      "feature": "F07",
+      "what": "Pipeline doc-gen Fase 1: análise ponta-a-ponta (Arqueólogo) que preenche DOC_SYNC.json sem documentar",
+      "why": "Descoberta completa",
+      "acceptanceCriteria": "Arqueólogo varre repo e preenche DOC_SYNC com 100% dos módulos/classes do mock (contagem via scanner estático), todos status=pendente e nenhum documentado; teste com gestor-projects",
+      "difficulty": "difícil",
+      "model": "claude-opus-4-8",
+      "dependsOn": [
+        "T20"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T22",
+      "feature": "F07",
+      "what": "Pipeline doc-gen Fase 2: multisubagents (1 func por agente) documentam em docs/technical/** e docs/functional/** (casos de uso com methods/class/component)",
+      "why": "Cobertura 100% paralela",
+      "acceptanceCriteria": "cada subagent documenta 1 funcionalidade do DOC_SYNC e marca status; ao final 100% dos itens status=documentado; docs/technical citam class/method e docs/functional citam casos/component; teste verifica que nenhum item fica sem dono",
+      "difficulty": "difícil",
+      "model": "claude-opus-4-8",
+      "dependsOn": [
+        "T21"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T23",
+      "feature": "F07",
+      "what": "Hook docs.sync mantém DOC_SYNC.json atualizado pós-alteração/pré-ship",
+      "why": "Sincronia contínua",
+      "acceptanceCriteria": "após write, DOC_SYNC atualizado (item novo→pendente, removido→retirado); teste com edit aditivo e deletivo",
+      "difficulty": "fácil",
+      "model": "claude-haiku-4-5",
+      "dependsOn": [
+        "T14",
+        "T20"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T24",
+      "feature": "F08",
+      "what": "Fluxo SDD canônico (init/analyze → interview/spec → plan → tasks → implement → verify → ship) + ramificação greenfield vs legado",
+      "why": "Fluxo único para todos os projetos",
+      "acceptanceCriteria": "fluxo documentado em 07-flow + implementado nos generators; teste de fluxo",
+      "difficulty": "médio",
+      "model": "claude-sonnet-4-6",
+      "dependsOn": [
+        "T16"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T25",
+      "feature": "F08",
+      "what": "PO before-task-sync (sync, valida prompt, classifica dificuldade trivial→extremo, escolhe modelo, monta PRD com modelo por task, traça plano, apresenta e delega)",
+      "why": "Cérebro do dia a dia",
+      "acceptanceCriteria": "PO gera PRD com modelo por task + plano por nível; teste com tasks mock cobrindo os 5 níveis (trivial→extremo) com plano e modelo distintos conforme matriz T26",
+      "difficulty": "difícil",
+      "model": "claude-opus-4-8",
+      "dependsOn": [
+        "T24",
+        "T26",
+        "T33"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T26",
+      "feature": "F08",
+      "what": "Classificação dificuldade → plano e matriz modelo por situação explicada (matriz em 07-flow)",
+      "why": "Gestão e alocação do PO",
+      "acceptanceCriteria": "tabela trivial→extremo com plano + matriz modelo (refator→opus-4-8, edição rápida→haiku etc.) validada; teste",
+      "difficulty": "médio",
+      "model": "claude-sonnet-4-6",
+      "dependsOn": [
+        "T24"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T27",
+      "feature": "F09",
+      "what": "AGENTS.md GLOBAL (memória viva por harness) + entrevista pessoal first-run (6 campos) via hook session.personal-interview",
+      "why": "Relacionamento humano",
+      "acceptanceCriteria": "first-run roda entrevista de 6 campos e cria AGENTS.md GLOBAL por harness; 2ª execução não repete; teste",
+      "difficulty": "médio",
+      "model": "claude-sonnet-4-6",
+      "dependsOn": [
+        "T14"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T28",
+      "feature": "F09",
+      "what": "Projects registry (init-projects) mapeia pasta projects + cross-harness session_id/harness",
+      "why": "Overview + continuidade",
+      "acceptanceCriteria": "projects-registry.json+md com nome/stack/SDD?/repo/sessions/overview; teste com pasta mock",
+      "difficulty": "médio",
+      "model": "claude-sonnet-4-6",
+      "dependsOn": [
+        "T16"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T29",
+      "feature": "F10",
+      "what": "Security-gate: hook PreToolUse bloqueante + checklist 20 itens + SECURITY_LOG.json+md + supply-chain pack-security",
+      "why": "Pentest reverso combinado",
+      "acceptanceCriteria": "gate bloqueia commit com payload XSS/SQLi; SECURITY_LOG registra item/severidade/arquivo; teste com 1 fixture vulnerável e 1 limpo por categoria do checklist de 20 itens",
+      "difficulty": "difícil",
+      "model": "claude-opus-4-8",
+      "dependsOn": [
+        "T14",
+        "T18"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T30",
+      "feature": "F11",
+      "what": "Ralph Loop por task: .sh por task (chat limpo), loop PLAN→ACT→EVALUATE→TERMINATE 3-5 iterações, mudanças cirúrgicas, validação em testes fixos",
+      "why": "Execução persistente",
+      "acceptanceCriteria": "gerador cria .sh por task do PRD.json; simula task que falha 2x e passa na 3ª; máx 5 iterações com log por iteração; teste",
+      "difficulty": "difícil",
+      "model": "claude-opus-4-8",
+      "dependsOn": [
+        "T18",
+        "T25"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T31",
+      "feature": "F12",
+      "what": "Integração com central-de-controle (via de duas mãos): subida change.recorded/security.violation → data-monitor, descida GET /models/recommend → PO",
+      "why": "Controle remoto de modelos",
+      "acceptanceCriteria": "central disponível → PO consome MCP GET /models/recommend; central indisponível → fallback models/catalog.json local com \"fallback\" registrado no ledger; teste com central mockada online e offline",
+      "difficulty": "médio",
+      "model": "claude-sonnet-4-6",
+      "dependsOn": [
+        "T18",
+        "T33"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T32",
+      "feature": "F13",
+      "what": "Docsify site: docs/_sidebar.md + README linkado (62 mds) + index.html loadSidebar + per-agent/per-skill files",
+      "why": "Leitura via docsify",
+      "acceptanceCriteria": "docsify serve renderiza todos os mds; teste de links sem broken links",
+      "difficulty": "fácil",
+      "model": "claude-haiku-4-5",
+      "dependsOn": [
+        "T04",
+        "T07"
+      ],
+      "status": "concluída"
+    },
+    {
+      "id": "T33",
+      "feature": "F14",
+      "what": "Model catalog versionado (models/catalog.json) com cron semanal + comando models refresh",
+      "why": "Manter benchmarks atualizados",
+      "acceptanceCriteria": "catalog com 6 modelos iniciais {id, provider, preço in/out, sweBenchVerified, speed} válido por schema; refresh (cron ou comando) atualiza e mantém última versão válida se offline; teste offline usa fallback local",
+      "difficulty": "médio",
+      "model": "claude-sonnet-4-6",
+      "dependsOn": [
+        "T02"
+      ],
+      "status": "concluída"
+    }
+  ]
+}

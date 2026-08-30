@@ -1,0 +1,1832 @@
+{
+  "specKit": {
+    "name": "spec-kit",
+    "displayName": "Spec-Driven Development Kit",
+    "version": "0.0.0-draft",
+    "status": "PLANNING",
+    "owner": "bbela",
+    "language": "pt-BR",
+    "createdAt": "2026-08-28",
+    "updatedAt": "2026-08-28",
+    "description": "Kit SDD multi-stack/multi-harness. Modelo de 2 camadas: (1) catálogo GLOBAL de agents/skills GENERALISTAS (templates); (2) agents/skills LOCAIS por projeto, 100% ESPECIALISTAS, organizados em SQUAD (PO, techlead, dev senior/pleno/junior, qa, security, docs) usando Context7 para docs específicas de stack/versão. Spec gerado por agente PO que ENTREVISTA o dev. Governança (PRD + ledger) alimenta dashboard. Pentest reverso combinado. Harnesses DEFERIDOS (owner fornece depois). Tudo planejado — nada implementado.",
+    "scopeDecision": "EM_ABERTO — definir junto com o owner durante a conversa",
+    "notes": "Arquivo evolutivo. Itens marcados PROPOSTA/EXAMPLE são ilustrações, não decisões. Arquivo irmão: control-center.orchestration.json (deferido)."
+  },
+  "concept": {
+    "status": "COLETANDO",
+    "summary": "Kit SDD com catálogo global generalista + squad local especialista por projeto (multiagent). O agente PO entrevista o dev para gerar spec/PRD completos (requisitos funcionais/não-funcionais). Squad cobre TODAS as etapas (spec->plan->tasks->implement->verify->ship) pensando como uma squad (PO, techlead, senior, pleno, junior, qa, security, docs). Especialistas locais usam Context7 para documentação de stack/versão. Governança obrigatória: PRD + ledger (dev/modelo/tokens/prompts/métricas) que alimenta o dashboard de gastos/uso. Pentest reverso combinado (agente + hook gate + checklist + arquivo de governança).",
+    "principles": [
+      "Arquitetura limpa/organizada (clean architecture adaptada por projeto)",
+      "Código pouco verboso, direto, seguindo ESLint",
+      "Testes unitários em TODAS as linguagens + TDD quando fizer sentido",
+      "QA forte e documentação 100% obrigatória",
+      "Cobertura total de domínios: performance, SEO, i18n, UX/UI, design-system, design-patterns, media-buying, security",
+      "Pentest reverso combinado (agente + hook gate + checklist + governance)",
+      "Orquestração de TODAS as alterações via ledger de governança",
+      "Catálogo GLOBAL generalista + squad LOCAL 100% especialista (multiagent)",
+      "Squad usa Context7 para docs específicas de stack/versão",
+      "PO entrevista o dev e assume papel de gerente de projeto (spec completa)",
+      "Greenfield (spec-first) ≠ legado (verify-docs -> doc-gen -> spec/change)"
+    ],
+    "ownerProfile": {
+      "role": "fullstack",
+      "languages": [
+        "php",
+        "javascript",
+        "typescript",
+        "python",
+        "css",
+        "html",
+        "linguagens proprietárias",
+        "wordpress"
+      ],
+      "frameworks": {
+        "backend": [
+          "laravel",
+          "php (puro)",
+          "python (django/fastapi)",
+          "wordpress"
+        ],
+        "frontend": [
+          "react",
+          "vuejs",
+          "angular",
+          "inertia"
+        ],
+        "styling": [
+          "tailwind css",
+          "bootstrap css"
+        ],
+        "markup": [
+          "html5",
+          "css3"
+        ]
+      },
+      "testing": [
+        "phpunit",
+        "playwright",
+        "unit tests (todas as linguagens)"
+      ],
+      "devops": {
+        "ci_cd": true,
+        "container": [
+          "docker"
+        ],
+        "clouds": [
+          "aws",
+          "gcloud",
+          "azure",
+          "vercel",
+          "oracle",
+          "dokploy"
+        ]
+      },
+      "architecturePref": "clean architecture (adaptada por projeto)",
+      "verbosityPref": "pouco verboso, direto ao ponto, bem escrito"
+    },
+    "domains": {
+      "status": "PROPOSTA — validar expansão",
+      "coverage": [
+        "performance",
+        "media-buying (compra de mídia)",
+        "seo",
+        "i18n",
+        "design-patterns",
+        "design-system",
+        "ux-ui",
+        "security (pentest reverso)",
+        "qa",
+        "docs",
+        "architecture",
+        "devops / ci-cd",
+        "custos & uso (métricas do ledger)"
+      ]
+    },
+    "architecture": {
+      "status": "DEFINIDO_CONCEITUALMENTE",
+      "model": "global-generalists + local-specialists(squad)",
+      "globalCatalog": "agents/skills GENERALISTAS (templates parametrizáveis) — base reutilizável de todos os papéis.",
+      "localSquad": "agents/skills LOCAIS por projeto, 100% ESPECIALISTAS, instanciados do catálogo global + especializados via Context7 (docs de stack/versão). Cobrem TODAS as etapas.",
+      "squadRoles": [
+        "po (entrevista+spec)",
+        "techlead (arquitetura/padrões)",
+        "dev-senior",
+        "dev-pleno",
+        "dev-junior",
+        "qa",
+        "security (pentest reverso)",
+        "docs (AGENTS.md/context)"
+      ],
+      "context7": "skills/agents especialistas usam Context7 para buscar documentação versionada da stack do projeto.",
+      "instantiation": "pipeline init/analyze: PO entravista dev -> spec/PRD -> generators materializam squad local especialista por stack/domínio.",
+      "extensibility": "catálogo extensível via adapters/plugins (npm pack) para linguagens proprietárias, WordPress, etc."
+    },
+    "interview": {
+      "status": "PROPOSTA — tornar o mais completo possível",
+      "owner": "agente PO (spec-writer)",
+      "behavior": "Assumir papel de gerente de projetos: ENTREVISTAR o dev, fazer TODAS as perguntas necessárias para spec/PRD completos.",
+      "dimensions": [
+        "Identificação: nome, propósito, tipo (greenfield/legado), stakeholder(s)",
+        "Objetivos: principal, secundários, critérios de sucesso/métricas",
+        "Público-alvo: personas, regiões, idiomas (i18n), acessibilidade",
+        "Stack: linguagens, frameworks, banco, infra, clouds, REST/GraphQL, restrições de versão",
+        "Padrões de código: styleguides, ESLint, design patterns, arquitetura alvo",
+        "Requisitos funcionais: módulos/features detalhados",
+        "Requisitos não-funcionais: performance, segurança, escala, disponibilidade, compliance (LGPD/GDPR)",
+        "Domínios de foco: performance, SEO, media-buying, UX/UI, design-system, etc.",
+        "Restrições: orçamento, prazos, legislação, integrações externas",
+        "QA: cobertura de testes esperada, ferramentas, ambientes",
+        "Deploy/CI-CD: pipelines, ambientes, estratégia de release",
+        "Governança: devs envolvidos, modelo de IA, necessidade de ledger",
+        "Riscos e dependências"
+      ]
+    },
+    "projectModes": {
+      "greenfield": {
+        "status": "DEFINIDO",
+        "flow": "spec-first (via entrevista PO)",
+        "steps": [
+          "PO entrevista -> Spec/PRD",
+          "Plan",
+          "Tasks",
+          "Implement (squad)",
+          "Verify",
+          "Ship"
+        ],
+        "docArtifact": "init gera AGENTS.md + PROJECT_CONTEXT"
+      },
+      "legacy": {
+        "status": "DEFINIDO",
+        "flow": "verify-docs -> doc-gen -> spec/change",
+        "steps": [
+          "verificar docs",
+          "SE faltar: doc-gen",
+          "PO extrai spec (reversa) + entrevista",
+          "testes de caracterização",
+          "SDD (Plan->Tasks->Implement->Verify->Ship)"
+        ],
+        "docArtifact": "analyze cria/atualiza AGENTS.md + PROJECT_CONTEXT"
+      },
+      "sharedRule": "Todo projeto 100% documentado; fonte de verdade = AGENTS.md + docs/PROJECT_CONTEXT.md."
+    },
+    "stackDetection": {
+      "status": "DEFINIDO_CONCEITUALMENTE",
+      "approach": "A pipeline gera AGENTS.md/PROJECT_CONTEXT canônico. O kit LÊ esse artefato para instanciar o squad local. Detecção inicial semeia via composer.json / package.json / pyproject.toml / angular.json / wp-config etc."
+    }
+  },
+  "documentation": {
+    "status": "DEFINIDO",
+    "mandatory": true,
+    "goal": "100% dos projetos documentados (técnica + funcional)",
+    "types": {
+      "technical": "documentação técnica: arquitetura, módulos, features, classes, métodos, componentes",
+      "functional": "documentação funcional: casos de uso, regras de negócio, UX, comportamento esperado"
+    },
+    "useCases": "cada caso de uso explica detalhadamente methods / class / componentes envolvidos",
+    "analysisGranularity": [
+      "módulo a módulo",
+      "feature a feature",
+      "caso de negócio a caso",
+      "classe a classe"
+    ],
+    "docSync": {
+      "status": "DEFINIDO",
+      "artifact": "docs/DOC_SYNC.json",
+      "purpose": "manifest de itens a documentar + status de cobertura (sync entre código e docs; garante 100% documentado)",
+      "process": [
+        "analisar MÓDULO a módulo",
+        "analisar FEATURE a feature",
+        "analisar CASO DE NEGÓCIO a caso",
+        "analisar CLASSE a classe",
+        "criar o DOC_SYNC.json com todos os itens pendentes",
+        "documentar ITEM a item, um a um (técnico + funcional + use cases)"
+      ]
+    },
+    "artifacts": [
+      {
+        "id": "AGENTS.md",
+        "purpose": "Instruções + contexto; gerado pela pipeline",
+        "generatedBy": "init (greenfield) OU analyze (legado)"
+      },
+      {
+        "id": "docs/PROJECT_CONTEXT.md",
+        "purpose": "Contexto vivo: stack, convenções, estrutura, gates",
+        "generatedBy": "mesma pipeline"
+      },
+      {
+        "id": "docs/spec/*.md",
+        "purpose": "Especificações por feature/alteracao"
+      },
+      {
+        "id": "docs/plan/*.md",
+        "purpose": "Arquitetura/plano"
+      },
+      {
+        "id": "docs/tasks/*.md",
+        "purpose": "Tasks com critério de aceite"
+      },
+      {
+        "id": "docs/technical/**",
+        "purpose": "Documentação técnica por módulo/feature/classe/método/componente"
+      },
+      {
+        "id": "docs/functional/**",
+        "purpose": "Documentação funcional: casos de uso detalhados (methods/class/component)"
+      },
+      {
+        "id": "docs/DOC_SYNC.json",
+        "purpose": "Manifest de itens a documentar + cobertura (docSync)"
+      }
+    ],
+    "docGenPipeline": {
+      "status": "DEFINIDO",
+      "note": "Pipeline doc-gen legado: 1) Análise ponta-a-ponta (módulo→feature→classe→method + imports/requests/packages) preenchendo DOC_SYNC.json como guia; 2) Dispatch multisubagents (1 funcionalidade por subagent) especialistas (Doc Técnico, Regras de Negócio, Requisitos Funcionais/Não-funcionais) documentando em paralelo em docs/technical/** e docs/functional/**; 3) Hook docs.sync mantém DOC_SYNC.json atualizado; garante cobertura 100%."
+    }
+  },
+  "security": {
+    "status": "PLANNING",
+    "concept": "pentest reverso",
+    "definition": "Analisar todo o código prevenindo classes conhecidas de vulnerabilidade — aplicado em todas as etapas.",
+    "enforcement": {
+      "status": "DEFINIDO",
+      "strategy": "COMBINAÇÃO: (a) agente dedicado security-specialist, (b) gate de hook que bloqueia commit/PR, (c) checklist nos docs de verify",
+      "governanceFile": "SECURITY_LOG registra ERROS, MUDANÇAS e CORREÇÕES",
+      "context7": "security-specialist usa Context7 para guias de segurança da stack/versão"
+    },
+    "checklist": {
+      "status": "PROPOSTA — validar/expandir",
+      "items": [
+        "SQL Injection",
+        "NoSQL Injection",
+        "XSS (refletido/armazenado/DOM)",
+        "CSRF",
+        "Command / OS injection",
+        "Path traversal / LFI / RFI",
+        "File upload: MIMETYPE, allowlist extensão, tamanho, fora do webroot, nome aleatório",
+        "Insecure deserialization",
+        "SSRF",
+        "XXE",
+        "Broken authentication / sessão",
+        "Sensitive data exposure (segredos em código/log)",
+        "Security misconfiguration (headers, CORS, erros verbosos)",
+        "Insecure dependencies (npm audit / composer audit)",
+        "Rate limiting / brute force",
+        "IDOR",
+        "Mass assignment",
+        "JWT / Token weaknesses",
+        "Hardcoded credentials / API keys",
+        "Open redirect / Clickjacking"
+      ]
+    }
+  },
+  "governance": {
+    "status": "DEFINIDO",
+    "model": "PRD (tasks) + ledger de orquestração (rastreabilidade)",
+    "purpose": "Controle de todas as alterações, especialmente multi-desenvolvedor; alimenta o dashboard de gastos/uso.",
+    "prd": {
+      "path": "docs/PRD.md + docs/PRD.json (espelhado)",
+      "purpose": "PRD guarda TODAS as tasks + contexto compartilhado + modelo por task",
+      "status": "DEFINIDO — JSON (máquina/dashboard) + MD (humano) espelhado, lado a lado com o ledger"
+    },
+    "orchestrationLedger": {
+      "path": "docs/ORCHESTRATION.json + docs/ORCHESTRATION.md (espelhado)",
+      "purpose": "o que foi feito, POR QUÊ, QUANDO e métricas (session_id, harness, task_id, developer, model, tokens, prompts, metrics...)",
+      "fields": [
+        "session_id",
+        "harness",
+        "task_id",
+        "what",
+        "why",
+        "when",
+        "developer",
+        "model",
+        "tokens",
+        "prompts",
+        "metrics",
+        "errors",
+        "changes",
+        "fixes",
+        "status"
+      ],
+      "feeds": "integration.dashboard",
+      "status": "DEFINIDO — JSON+MD espelhado junto ao PRD",
+      "format": "JSON+MD"
+    },
+    "securityGovernanceFile": {
+      "path": "docs/SECURITY_LOG.json + docs/SECURITY_LOG.md (espelhado)",
+      "purpose": "erros/mudanças/correções de segurança",
+      "status": "DEFINIDO"
+    }
+  },
+  "standards": {
+    "status": "DEFINIDO",
+    "adaptive": "Nem todos os padrões são obrigatórios. Aplicam CONFORME definido na entrevista/PRD por projeto. São um CATÁLOGO; o PO seleciona os vigentes.",
+    "commit": {
+      "convention": "Conventional Commits (semântico)",
+      "types": [
+        "feat",
+        "fix",
+        "refactor",
+        "docs",
+        "test",
+        "chore",
+        "security",
+        "perf",
+        "style"
+      ],
+      "lang": "pt-BR nas mensagens quando fizer sentido",
+      "rule": "nunca commit sem spec/tasks vinculados"
+    },
+    "branch": {
+      "strategy": "DEFINIDO — feature branches + PR obrigatório (trunk-based simplificado)"
+    },
+    "naming": {
+      "functions": "descritivos (ex: isRegisteredForDiscounts, não discount)",
+      "enums": "TitleCase (FavoritePerson, Monthly)",
+      "files": "seguir convenção da stack",
+      "note": "herdado de gestor-projects + pref do owner"
+    },
+    "codeReview": {
+      "rule": "techlead revisa; nada em produção sem review do squad",
+      "prohibition": "dev-junior sem revisão"
+    },
+    "testing": {
+      "tdd": "OBRIGATÓRIO em TODOS os projetos",
+      "rule": "testes reais focados em regras de negócio; escritos ANTES do código validando EXATAMENTE as regras especificadas pelo usuário",
+      "immutability": "testes FIXOS; só podem ser alterados se o usuário mudar a regra de negócio",
+      "inconsistency": "se o agente encontrar inconsistência, INTERROMPE e fala com o usuário",
+      "legacy": "testes de caracterização obrigatórios antes de alterar",
+      "tools": [
+        "phpunit",
+        "playwright",
+        "unit tests por linguagem"
+      ],
+      "coverage": "threshold definido por projeto (no PRD)"
+    },
+    "debug": {
+      "rule": "sempre ir à RAIZ do problema; NUNCA parar na primeira hipótese",
+      "process": "criar logs e monitorar; VERIFICAR testes ANTES de tomar decisão",
+      "collab": "atuar em comunicação com QA para entender o que e como deve ser feito"
+    },
+    "comunicacao": {
+      "rule": "direto ao ponto; evitar respostas longas/complexas; não verboso",
+      "code": "código limpo de fácil leitura para humano"
+    },
+    "secrets": {
+      "rule": "segredos NUNCA em código; usar env/vault; .env não commitado; rotacionar se vazar",
+      "audit": "pack-security + reverse-pentest checam vazamento de credenciais"
+    },
+    "contracts": {
+      "rule": "contratos de API (schema/OpenAPI/contrato de mensagem) definidos ANTES de implementar; versionados; respeitados no TDD"
+    },
+    "strategies": {
+      "rule": "estratégias arquiteturais/decisão documentadas no PRD/plan; PO decide com techlead"
+    },
+    "orchestrationRouting": {
+      "rule": "TODOS os agents/skills se comunicam entre si; o agente/skill de ORQUESTRAÇÃO instrui QUANDO chamar cada um em cada situação",
+      "injection": "o arquivo de orquestração é enviado em TODOS os hooks de interação a partir da SEGUNDA interação com o harness"
+    },
+    "livingOrganism": {
+      "rule": "ORGANISMO VIVO: agents/skills pausam o projeto para tirar dúvidas com o usuário quando necessário (dúvida, ambiguidade, alucinação); nunca inventam em caso de incerteza"
+    },
+    "friendlyNames": {
+      "rule": "TODOS os agents/skills têm NOMES AMIGÁVEIS para leitura/entendimento de quem atua no projeto a cada momento"
+    },
+    "ci": {
+      "gates": [
+        "lint (eslint/pint)",
+        "types",
+        "tests",
+        "build",
+        "security gate (pentest reverso)"
+      ],
+      "rule": "tudo verde para ship"
+    },
+    "errorHandling": {
+      "rule": "tratamento estruturado; sem expor stack ao usuário; sem segredos em logs"
+    },
+    "logging": {
+      "rule": "estruturado; NUNCA logar segredos/credenciais (item do pentest reverso)"
+    },
+    "i18n": {
+      "rule": "strings externalizadas; suporte a múltiplos idiomas quando houver i18n no escopo"
+    },
+    "performance": {
+      "rule": "DEFINIDO — budgets por projeto definidos no PRD (LCP, TTFB, queries N+1, etc.)"
+    },
+    "definitionOfDone": [
+      "spec/PRD atendido",
+      "testes verdes + cobertura",
+      "lint/types ok",
+      "security pass",
+      "docs atualizados (AGENTS.md/context)",
+      "ledger registrado",
+      "review aprovado"
+    ]
+  },
+  "dayToDay": {
+    "status": "DEFINIDO",
+    "globalSkillsBehavior": "SKILLS GLOBAIS atuam no SEGUNDO PLANO, ajudando a manter padronização/organização. PODEM ser chamadas pelo dev, mas o intuito é serem silenciosas/discretas (disparadas por preinstruções nas skills do projeto + hooks).",
+    "sessionBootstrap": {
+      "status": "DEFINIDO",
+      "trigger": "hook inicial de TODAS as sessions",
+      "behavior": "o agente identifica o estado do projeto e roteia:",
+      "rules": [
+        "NOVO -> sugere 'spec-kit init'",
+        "LEGADO sem nossas specs -> sugere 'spec-kit analyze'",
+        "LEGADO com specs -> vai direto para o sync (before-task-sync)"
+      ],
+      "hooksPerHarness": {
+        "claude-code": "SessionStart (User: ~/.claude/settings.json + Project: .claude/settings.json) → injeta AGENTS.md + PRD context + ledger (additionalContext)",
+        "cursor": "sessionStart (User: ~/.cursor/hooks.json + Project: .cursor/hooks.json) → injeta contexto",
+        "opencode": "session.created (plugin .opencode/plugins/* → event session.created + file.changed) + SessionStart via hooks.yaml",
+        "codex": "SessionStart (User: ~/.codex/hooks.json + Project: .codex/hooks.json) + permissionRequest",
+        "gemini-cli": "SessionStart (settings.json hooks BeforeTool hooks + SessionStart source startup/resume/clear)",
+        "antigravity-cli (agy)": "SessionStart + PreToolUse/PostToolUse (plugin hooks.json em ~/.gemini/antigravity-cli/plugins/<p>/)",
+        "antigravity-2.0": "SessionStart (global ~/.gemini/config/skills + ws .agents/skills) — via plugin/hooks.json",
+        "antigravity-ide": "SessionStart (IDE hooks.json em ~/.gemini/antigravity/)"
+      }
+    },
+    "poProtocol": {
+      "knowledge": "PO conhece profundamente o projeto (stack, padrões, regras de negócio) E o HARNESS aplicado: todos os modelos, pesos, benchmarks; sabe o MELHOR modelo por tarefa.",
+      "capabilities": [
+        "entender prompts",
+        "organizar tasks",
+        "paralelizar",
+        "multiagents",
+        "multisites",
+        "ralph loop",
+        "classificar dificuldade (trivial..extremo)",
+        "escolher modelo por tarefa",
+        "montar PRD com modelo por task",
+        "traçar plano por nível de dificuldade",
+        "apresentar plano e delegar após aprovação"
+      ],
+      "modelSelection": "PENDENTE integração com central-de-controle — hoje usa models/catalog.json local versionado {id, provider, contextWindow, inputPrice/outputPrice, sweBenchVerified, speed, strengths}. Quando a central finalizar modelCatalog/benchmarkEngine (control-center.orchestration.json), o PO passará a consumir via MCP/Central (GET /models/recommend) com fallback local. Ver central-de-controle.via.descida_controla_recomenda e docs/07-flow-daytoday.md matriz explicada por situação.",
+      "taskClassification": {
+        "levels": [
+          "trivial",
+          "fácil",
+          "médio",
+          "difícil",
+          "extremamente difícil"
+        ],
+        "behavior": "Para cada nível, PO traça PLANO DIFERENTE; apresenta ao usuário; APÓS APROVAÇÃO, delega agents/skills para controlar e executar.",
+        "strategy": {
+          "trivial": "1 dev-junior + ralph loop enxuto (DEFINIDO)",
+          "fácil": "dev-junior/pleno + ralph loop",
+          "médio": "dev-pleno + qa + ralph loop",
+          "difícil": "dev-senior + techlead + qa + ralph loop + possível multiagents",
+          "extremo": "techlead + senior + pleno + qa + multiagents + ralph loop com mais iterações (PROPOSTA — refinar)"
+        }
+      },
+      "beforeTaskSync": {
+        "description": "Rotina do PO ANTES de cada task.",
+        "steps": [
+          "sincronizar pensamento (sync)",
+          "validar entendimento do prompt",
+          "classificar dificuldade da tarefa",
+          "escolher o melhor modelo do harness para a tarefa",
+          "criar/atualizar PRD com contexto compartilhado + modelo por task",
+          "traçar plano conforme nível de dificuldade",
+          "apresentar plano ao usuário e aguardar aprovação",
+          "listar tasks e decidir multiagents",
+          "delegar agents/skills para controlar e executar (Ralph Loop com modelo definido)"
+        ]
+      }
+    },
+    "ralphLoop": {
+      "status": "DEFINIDO — ver docs/06-ralph-loop.md (explicação simples abaixo)",
+      "executionModel": "Ao gerar o PRD JSON (tasks + contexto compartilhado), geramos um arquivo .sh que abre um CHAT NOVO com contexto LIMPO para CADA tarefa (isolamento de contexto por task).",
+      "loopMechanics": {
+        "phases": [
+          "PLAN/REFLECT",
+          "ACT (gera solução)",
+          "EVALUATE (testes/linters/schema)",
+          "TERMINATE (100% sucesso OU max_iterations)"
+        ],
+        "pillars": [
+          "persistência de estado/histórico",
+          "validação determinística (código, não só LLM-judge)",
+          "auto-correção por causa raiz"
+        ],
+        "maxIterations": "3 a 5 ciclos (teto rígido p/ não desperdiçar tokens)",
+        "historyCompression": "em loops longos, envia só o erro (stack trace) + instrução de correção, não o código antigo",
+        "surgicalChanges": "alterações cirúrgicas focadas no erro; não reescreve módulos já funcionando"
+      },
+      "alignment": "VALIDAÇÃO = nossos testes de regra de negócio FIXOS (TDD obrigatório). Ralph Loop itera até eles passarem. Combina com debug (raiz do problema) e não-verbosidade. Usa o MODELO POR TAREFA definido pelo PO no PRD (modelSelection).",
+      "note": "Detalhar a skill 'ralph-loop' quando formos criá-la."
+    },
+    "multisites": {
+      "status": "DEFINIDO — monorepos + sistemas interligados",
+      "concept": "Sistemas que se conversam/comunicam entre si, além de monorepos. O squad deve coordenar múltiplos sistemas interligados."
+    },
+    "communication": {
+      "status": "DEFINIDO",
+      "model": "TODOS os agents/skills se comunicam entre si (eventos internos + mensagens do orchestrator).",
+      "orchestrationSkill": "agente/skill de ORQUESTRAÇÃO instrui QUANDO chamar cada agent/skill em cada situação.",
+      "fileInjection": "o arquivo de orquestração é enviado em TODOS os hooks de interação a partir da SEGUNDA interação com o harness (mantém o squad ciente do estado/roteamento)."
+    },
+    "livingOrganism": {
+      "status": "DEFINIDO",
+      "rule": "Skills e agents do projeto são um ORGANISMO VIVO: sempre que necessário, PAREM o projeto para tirar dúvidas com o usuário (ambiguidades, dúvidas, alucinação ou comportamento suspeito).",
+      "behavior": "em caso de alucinação/incerteza, o agente NÃO inventa; pausa e pergunta ao usuário antes de prosseguir."
+    },
+    "friendlyNames": {
+      "status": "DEFINIDO",
+      "rule": "TODOS os agents e skills devem ter NOMES AMIGÁVEIS para facilitar a leitura/entendimento de quem está agindo no projeto a cada momento."
+    },
+    "note": "ralph loop e multisites registrados conforme esclarecimento do owner."
+  },
+  "personalContext": {
+    "status": "DEFINIDO",
+    "globalAgentsMd": {
+      "description": "AGENTS.md GLOBAL (fora do projeto) — memória viva do relacionamento com o usuário. PREENCHIDO/ATUALIZADO pelos agents e skills ao longo do tempo.",
+      "path": "por harness: opencode ~/.config/opencode/AGENTS.md | claude ~/.claude/CLAUDE.md | codex ~/.codex/AGENTS.md | cursor ~/.cursor/rules + AGENTS.md | gemini ~/.gemini/GEMINI.md | antigravity 2.0 ~/.gemini/config/AGENTS.md | agy ~/.gemini/antigravity-cli/config/AGENTS.md | ide ~/.gemini/antigravity/AGENTS.md (separado do AGENTS.md do projeto)",
+      "filledBy": "agents e skills (não só pelo usuário)",
+      "purpose": "contexto inicial para relacionamento mais humano e personalizado",
+      "status": "DEFINIDO"
+    },
+    "personalInterview": {
+      "trigger": "PRIMEIRA interação do usuário com o pack (first-run)",
+      "owner": "PO (ou agente de onboarding)",
+      "goal": "entender como o usuário gosta de trabalhar e criar vínculo",
+      "fields": [
+        "nome do usuário",
+        "nome que o usuário vai dar para o agente dele (nome do assistente pessoal)",
+        "como o usuário gosta de trabalhar (ritmo, autonomia, nível de detalhe)",
+        "padrões/costumes que o usuário prefere",
+        "como ele quer as respostas (tom, idioma, verbosidade, formato)",
+        "itens que o usuário pede constantemente"
+      ],
+      "outcome": "gera/atualiza o AGENTS.md GLOBAL com o perfil do usuário"
+    },
+    "note": "Relacionamento mais humano: o agente conhece o usuário pelo nome e pelo nome que ele deu ao seu agente."
+  },
+  "projectsRegistry": {
+    "status": "DEFINIDO",
+    "trigger": "spec-kit init-projects (ou ao iniciar o pack)",
+    "scope": "pasta de projects (onde todos os projetos do usuário ficam)",
+    "responsibility": "Mapear TODOS os projetos (ativos ou históricos) do usuário",
+    "captures": [
+      "nome do projeto",
+      "stack",
+      "se está usando o nosso SDD (sim/não)",
+      "link do repositório",
+      "controle de sessions do projeto",
+      "overview geral (resumo)"
+    ],
+    "storage": "DEFINIDO — projects-registry.json + projects-registry.md espelhado na pasta de projects",
+    "crossHarness": {
+      "goal": "retrocompatibilidade de contexto entre harnesses (ex: iniciar no Claude e terminar no opencode)",
+      "rule": "cada session recebe um session_id estável + harness utilizado, registrados na governança, para portar contexto entre harnesses",
+      "possibilities": "dezenas de combinações entre os 8 harnesses cobertos"
+    }
+  },
+  "harnesses": {
+    "status": "VERIFICADO_2026-08-30",
+    "description": "Alvos multiharness — pesquisado em docs oficiais (opencode.ai, code.claude.com, cursor.com, geminicli.com, antigravity.google, learn.chatgpt.com). Ver docs/01-harnesses.md.",
+    "targets": [
+      {
+        "id": "opencode",
+        "kind": "cli/ide",
+        "agents": "~/.config/opencode/agents/*.md + .opencode/agents/*.md",
+        "skills": ".opencode/skills/<n>/SKILL.md + ~/.config/opencode/skills/<n>/SKILL.md + compat .claude/skills + .agents/skills",
+        "hooks": ".opencode/plugins/*.ts (@opencode-ai/plugin, tool.execute.after)",
+        "commands": ".opencode/commands/*.md + ~/.config/opencode/commands/*.md | opencode.json:command",
+        "session": "opencode.json (proj + ~/.config/opencode/opencode.json) + AGENTS.md hierárquico",
+        "note": "dirs existem vazios; verified opencode.ai/docs/{agents,skills,commands}",
+        "source": "https://opencode.ai/docs/agents https://opencode.ai/docs/skills https://opencode.ai/docs/commands",
+        "events": "todos os 4 eventos canônicos (change.recorded, security.violation, project.instantiated, session.started)"
+      },
+      {
+        "id": "antigravity-2.0",
+        "kind": "desktop",
+        "agents": ".agents/skills via adapter",
+        "skills": "<ws>/.agents/skills/<n>/SKILL.md + ~/.gemini/config/skills/<n>/SKILL.md (legacy .agent/skills)",
+        "hooks": "plugin hooks.json | settings.json (/hooks)",
+        "commands": "skills → slash /<nome>",
+        "session": "~/.gemini/config/ + settings + permissions",
+        "note": "agent-first desktop (I/O 2026)",
+        "source": "https://antigravity.google/docs/skills https://antigravity.google/docs/cli/plugins",
+        "events": "todos os 4 eventos canônicos (change.recorded, security.violation, project.instantiated, session.started)"
+      },
+      {
+        "id": "antigravity-cli (agy)",
+        "kind": "cli",
+        "agents": "Go binary ~/.local/bin/agy",
+        "skills": "ws .agents/skills/<n>.md → /<n> + global ~/.gemini/antigravity-cli/skills/",
+        "hooks": "~/.gemini/antigravity-cli/plugins/<p>/hooks.json | settings.json (/hooks)",
+        "commands": "skills → slash; agy plugin {list,install,enable,disable,uninstall}",
+        "session": "~/.gemini/antigravity-cli/ + mcp_config.json",
+        "note": "replaces gemini CLI for individual tiers since 2026-06-18",
+        "source": "https://antigravity.google/docs/cli/getting-started https://antigravity.google/docs/cli/plugins",
+        "events": "todos os 4 eventos canônicos (change.recorded, security.violation, project.instantiated, session.started)"
+      },
+      {
+        "id": "antigravity-ide",
+        "kind": "ide",
+        "agents": "IDE agent-first (VS Code/JetBrains/Zed/Xcode extensions)",
+        "skills": "<ws>/.agents/skills/<n>/SKILL.md + ~/.gemini/antigravity/skills/<n>/SKILL.md (legacy .agent/skills)",
+        "hooks": "plugin hooks.json | settings.json",
+        "commands": "skills → slash",
+        "session": "~/.gemini/antigravity/ + AGENTS.md + rules/workflows",
+        "note": "IDE 2.5.5",
+        "source": "https://antigravity.google/docs/ide/skills https://antigravity.google/docs/ide/hooks",
+        "events": "todos os 4 eventos canônicos (change.recorded, security.violation, project.instantiated, session.started)"
+      },
+      {
+        "id": "gemini-cli",
+        "kind": "cli",
+        "agents": "GEMINI.md hierárquico (settings.json:context.fileName pode incluir AGENTS.md)",
+        "skills": "gemini skills {list,install,uninstall} + /skills {list,link,disable,enable,reload} --scope user|workspace",
+        "hooks": "extension hooks/hooks.json (limited interception vs claude hooks)",
+        "commands": ".gemini/commands/*.toml (user ~/.gemini/commands/*.toml + proj .gemini/commands/*.toml)",
+        "session": "settings.json (context.fileName, trusted folders, .geminiignore) + GEMINI.md",
+        "note": "enterprise mantém gemini; individual migrado para agy (2026-06-18)",
+        "source": "https://geminicli.com/docs/cli/skills https://geminicli.com/docs/cli/gemini-md https://antigravity.google/docs/cli/gcli-migration",
+        "events": "todos os 4 eventos canônicos (change.recorded, security.violation, project.instantiated, session.started)"
+      },
+      {
+        "id": "claude-code",
+        "kind": "cli/ide",
+        "agents": "~/.claude/agents/*.md + .claude/agents/*.md + nested + plugin agents",
+        "skills": "~/.claude/skills/<n>/SKILL.md + .claude/skills/<n>/SKILL.md + nested + plugin:skill + .claude/commands/*.md (legado, skill precedence)",
+        "hooks": "~/.claude/settings.json + .claude/settings.json (+ .local) events PreToolUse/PostToolUse/Stop/SessionStart type command/http/mcp_tool/prompt/agent",
+        "commands": ".claude/commands/*.md (ainda funciona) + cada skill cria /<nome>",
+        "session": "~/.claude/settings.json + .claude/settings.local.json + CLAUDE.md + ~/.claude.json (MCP)",
+        "note": "maduro; padrão agentskills.io",
+        "source": "https://code.claude.com/docs/en/skills https://claude.com/blog/steering-claude-code-skills-hooks-rules-subagents-and-more",
+        "events": "todos os 4 eventos canônicos (change.recorded, security.violation, project.instantiated, session.started)"
+      },
+      {
+        "id": "codex",
+        "kind": "cli",
+        "agents": "AGENTS.md hierárquico (raiz + nested, ≤32 KiB) + ~/.codex/AGENTS.md",
+        "skills": "repo .agents/skills/<n>/SKILL.md + user ~/.agents/skills/<n>/SKILL.md + admin /etc/codex/skills + compat .codex/skills + .codex-plugin/plugin.json + openai.yaml",
+        "hooks": "openai.yaml por skill + config permissões (~/.codex/config.toml)",
+        "commands": "$skill-name + selector; .codex/prompts/; plugins distribuem skills+connectors",
+        "session": "~/.codex/config.toml + AGENTS.md hierárquico + openai.yaml",
+        "note": "OpenAI Codex — padrão aberto AGENTS.md",
+        "source": "https://learn.chatgpt.com/docs/build-skills https://agentskills.io/specification https://github.com/openai/codex",
+        "events": "todos os 4 eventos canônicos (change.recorded, security.violation, project.instantiated, session.started)"
+      },
+      {
+        "id": "cursor",
+        "kind": "ide",
+        "agents": ".cursor/agents/*.md (subagents paralelos) + ~/.cursor/agents/ + compat .claude/.codex dirs",
+        "skills": ".cursor/skills/<n>/SKILL.md + ~/.cursor/skills/ + compat .claude/skills + .agents/skills + .codex/skills (nested/symlink 2026) + .cursor-plugin/plugin.json",
+        "hooks": ".cursor/hooks.json (proj) + ~/.cursor/hooks.json (user) events sessionStart/End, preToolUse/postToolUse, beforeShellExecution type command/prompt (stdio JSON)",
+        "commands": "skills → slash; /skills browser; .cursor/commands/ legacy; /plugin marketplace",
+        "session": ".cursor/rules/*.mdc (globs) + AGENTS.md cross-tool + permissions.json",
+        "note": "hooks agora estáveis (não mais 'limitado'); verificado 2026",
+        "source": "https://cursor.com/docs/hooks https://cursor.com/docs/rules",
+        "events": "todos os 4 eventos canônicos (change.recorded, security.violation, project.instantiated, session.started)"
+      }
+    ],
+    "details": "Ver docs/01-harnesses.md para tabela + seções por harness com fontes.",
+    "note": "Adapters copiam agents/skills/hooks/commands para os locais acima. VERIFICADO via pesquisa web em docs oficiais em 2026-08-30."
+  },
+  "sddFlow": {
+    "status": "PROPOSED",
+    "description": "Fluxo canônico; ramifica greenfield vs legacy. Spec gerado por entrevista do PO. Após Spec, instancia squad local especialista.",
+    "phases": [
+      {
+        "id": "init-analyze",
+        "name": "Init / Analyze",
+        "goal": "Gerar docs + instanciar squad local por spec",
+        "entry": "novo projeto OU legado",
+        "exit": "AGENTS.md + squad instanciado",
+        "agents": [
+          "docs",
+          "legacy-analyzer"
+        ],
+        "artifacts": [
+          "AGENTS.md",
+          "PROJECT_CONTEXT",
+          "squad/*"
+        ]
+      },
+      {
+        "id": "interview-spec",
+        "name": "Interview / Spec (PO)",
+        "goal": "PO entrevista dev -> spec/PRD completos",
+        "entry": "intenção",
+        "exit": "Spec + PRD aprovados",
+        "agents": [
+          "po"
+        ],
+        "artifacts": [
+          "docs/spec/*.md",
+          "PRD"
+        ]
+      },
+      {
+        "id": "plan",
+        "name": "Plan / Architecture",
+        "goal": "Arquitetura/plano (techlead)",
+        "entry": "Spec",
+        "exit": "Plano validado",
+        "agents": [
+          "techlead"
+        ],
+        "artifacts": [
+          "docs/plan/*.md"
+        ]
+      },
+      {
+        "id": "tasks",
+        "name": "Tasks",
+        "goal": "Tasks com aceite",
+        "entry": "Plano",
+        "exit": "Tasks prontas",
+        "agents": [
+          "po",
+          "techlead"
+        ],
+        "artifacts": [
+          "docs/tasks/*.md"
+        ]
+      },
+      {
+        "id": "implement",
+        "name": "Implement (squad)",
+        "goal": "Código TDD/DDR + padrões (devs)",
+        "entry": "Tasks",
+        "exit": "Código + testes verdes",
+        "agents": [
+          "dev-senior",
+          "dev-pleno",
+          "dev-junior"
+        ],
+        "artifacts": [
+          "src/**"
+        ]
+      },
+      {
+        "id": "verify",
+        "name": "Verify",
+        "goal": "lint, tipos, testes, SEGURANÇA",
+        "entry": "Implement",
+        "exit": "Verde em gates",
+        "agents": [
+          "qa",
+          "security-specialist"
+        ],
+        "artifacts": [
+          "ci reports",
+          "SECURITY_LOG"
+        ]
+      },
+      {
+        "id": "ship",
+        "name": "Ship",
+        "goal": "commit semântico, changelog, release, deploy",
+        "entry": "Verify",
+        "exit": "Pronto",
+        "agents": [
+          "techlead",
+          "docs"
+        ],
+        "artifacts": [
+          "release"
+        ]
+      }
+    ]
+  },
+  "agents": {
+    "status": "DEFINIDO — hows preenchidos a partir das conversas + JSON",
+    "model": "global-generalists (templates) + local-squad-specialists (por projeto, Context7)",
+    "schema": {
+      "id": "id",
+      "friendlyName": "nome amigável (legível)",
+      "cargo": "título/função",
+      "funcao": "o que faz em 1 linha",
+      "tier": "global | local",
+      "type": "meta|phase|layer|qa|security|docs",
+      "role": "responsabilidade",
+      "scope": [
+        "paths"
+      ],
+      "skills": [
+        "ids"
+      ],
+      "responsibilities": [],
+      "prohibitions": [],
+      "how": "passos",
+      "usesContext7": "bool",
+      "modes": "greenfield vs legacy",
+      "harnessBinding": "VERIFICADO — ver harnesses.targets e docs/01-harnesses.md"
+    },
+    "globalCatalog": [
+      {
+        "id": "orchestrator",
+        "tier": "global",
+        "type": "meta",
+        "friendlyName": "Maestro",
+        "cargo": "Orquestrador-Chefe",
+        "funcao": "Coordena o fluxo SDD e roteia o squad por modo/stack",
+        "role": "coordena fluxo, roteia squad por modo/stack, orquestra alterações e ledger; a skill 'orchestration' instrui QUANDO chamar cada agent/skill por situação",
+        "skills": [
+          "all",
+          "orchestration"
+        ],
+        "responsibilities": [
+          "ordenar fases",
+          "rotear agente",
+          "registrar ledger",
+          "injetar arquivo de orquestração nas interações (da 2ª em diante)"
+        ],
+        "prohibitions": [],
+        "how": "1. Recebe evento (session.classify / prompt / hook). 2. Lê PRD + ORCHESTRATION ledger + AGENTS.md. 3. Ordena fase SDD (init→spec→plan→tasks→implement→verify→ship). 4. Roteia para agent/skill correto via skill 'orchestration' (tabela quando chamar quem). 5. Paraleliza quando task permite. 6. Registra ledger (session_id, harness, model, tokens, prompts). 7. A partir da 2ª interação injeta arquivo de orquestração no contexto. 8. Se dúvida/alucinação → pausa e pergunta ao usuário (organismo vivo).",
+        "usesContext7": false,
+        "modes": "greenfield|legado",
+        "note": "DEFINIDO",
+        "status": "DEFINIDO"
+      },
+      {
+        "id": "generalist-implementer",
+        "tier": "global",
+        "type": "layer",
+        "friendlyName": "Codificador",
+        "cargo": "Engenheiro de Implementação (Base)",
+        "funcao": "Template generalista de codificação",
+        "role": "template base de codificação (generalista)",
+        "skills": [
+          "tdd",
+          "eslint",
+          "design-patterns"
+        ],
+        "responsibilities": [
+          "codar seguindo padrões"
+        ],
+        "prohibitions": [
+          "verboso",
+          "ignorar ESLint",
+          "float p/ dinheiro"
+        ],
+        "how": "1. Recebe task + critérios de aceite + stack do AGENTS.md. 2. Escreve TESTE primeiro (TDD fixo, regra de negócio). 3. Implementa código mínimo direto/pouco verboso, seguindo ESLint e proibição float p/ dinheiro. 4. Roda lint+type+tests local. 5. Se vermelho → corrige causa raiz (não primeira hipótese). 6. Entrega para QA. Template vira especialista local via Context7.",
+        "usesContext7": false,
+        "modes": "ambos",
+        "note": "especializado por stack ao virar local",
+        "status": "DEFINIDO"
+      },
+      {
+        "id": "generalist-qa",
+        "tier": "global",
+        "type": "qa",
+        "friendlyName": "Garantidor",
+        "cargo": "Analista de Qualidade (Base)",
+        "funcao": "Template generalista de QA/testes",
+        "role": "template base de QA",
+        "skills": [
+          "eslint",
+          "phpunit",
+          "playwright"
+        ],
+        "responsibilities": [
+          "gates",
+          "cobertura"
+        ],
+        "prohibitions": [
+          "approvar vermelho"
+        ],
+        "how": "1. Lê task + testes de regra de negócio (FIXOS). 2. Roda gates: lint (eslint/pint), types, tests, build, security. 3. Verifica cobertura (threshold do PRD) e char-tests em legado. 4. Se vermelho → bloqueia ship, registra no ledger, devolve com causa raiz. 5. Se verde → aprova e registra métricas. Nunca aprova vermelho.",
+        "usesContext7": false,
+        "modes": "ambos",
+        "note": "DEFINIDO",
+        "status": "DEFINIDO"
+      },
+      {
+        "id": "generalist-security",
+        "tier": "global",
+        "type": "security",
+        "friendlyName": "Sentinela",
+        "cargo": "Auditor de Segurança (Base)",
+        "funcao": "Template generalista de pentest reverso",
+        "role": "template base de pentest reverso",
+        "skills": [
+          "reverse-pentest"
+        ],
+        "responsibilities": [
+          "checar checklist",
+          "bloquear vuln"
+        ],
+        "prohibitions": [
+          "ignorar item"
+        ],
+        "how": "1. Em PreCommit/PostToolUse roda checklist pentest reverso (20 itens: SQLi, XSS, CSRF, SSRF, upload, secrets etc. — Context7 por stack). 2. Se vulnerabilidade → BLOQUEIA commit/PR e escreve SECURITY_LOG (item, severidade, arquivo). 3. Se ok → libera e registra ledger. 4. Em legado revisa secrets em código/log.",
+        "usesContext7": false,
+        "modes": "ambos",
+        "note": "DEFINIDO",
+        "status": "DEFINIDO"
+      },
+      {
+        "id": "generalist-docs",
+        "tier": "global",
+        "type": "docs",
+        "friendlyName": "Documentista",
+        "cargo": "Arquivista (Base)",
+        "funcao": "Template generalista de documentação",
+        "role": "template base de documentação",
+        "skills": [
+          "doc-gen"
+        ],
+        "responsibilities": [
+          "100% documentado"
+        ],
+        "prohibitions": [
+          "projeto sem AGENTS.md"
+        ],
+        "how": "1. Garante AGENTS.md + PROJECT_CONTEXT existem (init/analyze). 2. A cada alteração exige docs atualizadas (hook docs-check pré-ship). 3. Mantém docs/DOC_SYNC.json atualizado (hook docs.sync). 4. Gera spec/plan/tasks em docs/. Nunca deixa projeto sem AGENTS.md.",
+        "usesContext7": false,
+        "modes": "ambos",
+        "note": "DEFINIDO",
+        "status": "DEFINIDO"
+      },
+      {
+        "id": "legacy-analyzer",
+        "tier": "global",
+        "type": "meta",
+        "friendlyName": "Arqueólogo",
+        "cargo": "Analista de Legado",
+        "funcao": "Doc-gen e testes de caracterização em legado",
+        "role": "doc-gen + testes caracterização em legado",
+        "skills": [
+          "doc-gen",
+          "char-tests"
+        ],
+        "responsibilities": [
+          "doc se faltar",
+          "cobrir antes de alterar"
+        ],
+        "prohibitions": [
+          "alterar sem char-tests"
+        ],
+        "how": "1. Flow legado: verify-docs → se faltar docs → inspeção ponta-a-ponta (módulo/feature/classe/method/imports/requests/packages). 2. Preenche DOC_SYNC.json com todos os itens pendentes. 3. Cria AGENTS.md + PROJECT_CONTEXT via análise (composer.json/package.json etc.). 4. Escreve testes de caracterização para cobrir comportamento atual. 5. Bloqueia qualquer alteração sem char-tests.",
+        "usesContext7": false,
+        "modes": "somente legado",
+        "note": "DEFINIDO",
+        "status": "DEFINIDO"
+      },
+      {
+        "id": "pack-security",
+        "tier": "global",
+        "type": "security",
+        "friendlyName": "Vigiador",
+        "cargo": "Auditor de Supply-Chain",
+        "funcao": "Valida segurança dos packs antes de instalar",
+        "role": "verifica SEGURANÇA dos PACKS antes de instalar: confiável, sem vulnerabilidades, amplamente testado/validado",
+        "skills": [
+          "pack-audit",
+          "supply-chain"
+        ],
+        "responsibilities": [
+          "validar pack antes de install",
+          "npm audit / assinatura",
+          "bloquear pack não confiável"
+        ],
+        "prohibitions": [
+          "instalar pack não validado"
+        ],
+        "how": "1. Antes de instalar qualquer pack (npm/composer) → verifica supply-chain: npm audit/composer audit, assinatura, reputação, testes, vulnerabilidades conhecidas. 2. Se não confiável → bloqueia install. 3. Se ok → libera e registra no ledger. Nunca instala pack não validado.",
+        "usesContext7": false,
+        "modes": "ambos",
+        "note": "supply-chain security do próprio kit",
+        "status": "DEFINIDO"
+      }
+    ],
+    "localSquad": [
+      {
+        "id": "po",
+        "tier": "local",
+        "type": "phase",
+        "friendlyName": "PO",
+        "cargo": "Gerente de Produto (Product Owner)",
+        "funcao": "Entrevista o dev, monta PRD, classifica dificuldade, escolhe modelo e delega",
+        "role": "ENTREVISTA o dev, assume gerência de projeto, gera spec/PRD completos e orquestra o dia a dia",
+        "skills": [
+          "interview",
+          "requirements",
+          "orchestration"
+        ],
+        "responsibilities": [
+          "entrevistar dev",
+          "requisitos funcionais/não-funcionais",
+          "PRD com MODELO por task",
+          "classificar dificuldade",
+          "traçar plano por nível",
+          "apresentar plano e delegar após aprovação",
+          "before-task-sync (dayToDay.poProtocol)",
+          "decidir multiagents/multisites/ralph loop",
+          "paralelizar e nivelar tasks"
+        ],
+        "prohibitions": [
+          "spec vaga sem critério de aceite",
+          "agir sem validar entendimento do prompt",
+          "executar sem aprovação do plano",
+          "escolher modelo sem base em benchmarks/pesos"
+        ],
+        "how": "1. ENTREVISTA o dev (13 dimensões: identificação, objetivos, público, stack, padrões, funcionais, não-funcionais, domínios, restrições, QA, deploy, governança, riscos). 2. Valida entendimento do prompt. 3. Classifica dificuldade (trivial→extremo). 4. Escolhe melhor modelo do harness por task (via base modelos/pesos/benchmarks). 5. Monta PRD (JSON+MD espelhado, contexto compartilhado + modelo por task + critérios de aceite). 6. Traça plano por nível e apresenta para aprovação. 7. Decide multiagents/multisites/ralph-loop e delega. 8. Roda before-task-sync antes de cada task.",
+        "usesContext7": false,
+        "modes": "ambos",
+        "note": "coração do dia a dia",
+        "status": "DEFINIDO"
+      },
+      {
+        "id": "techlead",
+        "tier": "local",
+        "type": "phase",
+        "friendlyName": "Tech Lead",
+        "cargo": "Líder Técnico",
+        "funcao": "Arquitetura, padrões e revisão do squad",
+        "role": "arquitetura, padrões, revisão técnica do squad",
+        "skills": [
+          "clean-architecture",
+          "design-patterns",
+          "code-review"
+        ],
+        "responsibilities": [
+          "fronteiras",
+          "stack",
+          "revisão"
+        ],
+        "prohibitions": [
+          "quebrar estrutura sem aprovação"
+        ],
+        "how": "1. Lê PRD/spec. 2. Desenha arquitetura/plano (fronteiras, camadas clean adaptada, stack, design patterns) usando Context7 da stack/versão. 3. Define estrutura de pastas e contratos de API (OpenAPI/schema) antes de implementar. 4. Revisa código do squad (proíbe quebrar estrutura sem aprovação). 5. Aprova plano e libera tasks. 6. Na ship, revisa release.",
+        "usesContext7": true,
+        "modes": "ambos",
+        "note": "DEFINIDO",
+        "status": "DEFINIDO"
+      },
+      {
+        "id": "dev-senior",
+        "tier": "local",
+        "type": "layer",
+        "friendlyName": "Dev Sênior",
+        "cargo": "Desenvolvedor Sênior",
+        "funcao": "Implementação complexa e mentoria do squad",
+        "role": "implementação complexa, mentoria do squad",
+        "skills": [
+          "stack-específica",
+          "tdd"
+        ],
+        "responsibilities": [
+          "features complexas",
+          "revisar pleno/junior"
+        ],
+        "prohibitions": [
+          "verboso"
+        ],
+        "how": "1. Pega tasks difíceis/complexas do PRD. 2. TDD estrito (teste de regra antes). 3. Implementa com Context7 da stack, pouco verboso, direto. 4. Mentoria: revisa pleno/júnior. 5. Resolve conflitos técnicos e causa raiz.",
+        "usesContext7": true,
+        "modes": "ambos",
+        "note": "DEFINIDO",
+        "status": "DEFINIDO"
+      },
+      {
+        "id": "dev-pleno",
+        "tier": "local",
+        "type": "layer",
+        "friendlyName": "Dev Pleno",
+        "cargo": "Desenvolvedor Pleno",
+        "funcao": "Implementação de média complexidade",
+        "role": "implementação de média complexidade",
+        "skills": [
+          "stack-específica",
+          "tdd"
+        ],
+        "responsibilities": [
+          "features padrão"
+        ],
+        "prohibitions": [
+          "verboso"
+        ],
+        "how": "1. Pega tasks médias/padrão. 2. TDD. 3. Implementa feature padrão com Context7. 4. Escreve testes unitários. 5. Envia para revisão senior/techlead.",
+        "usesContext7": true,
+        "modes": "ambos",
+        "note": "DEFINIDO",
+        "status": "DEFINIDO"
+      },
+      {
+        "id": "dev-junior",
+        "tier": "local",
+        "type": "layer",
+        "friendlyName": "Dev Júnior",
+        "cargo": "Desenvolvedor Júnior",
+        "funcao": "Implementação guiada de tasks simples",
+        "role": "implementação guiada, tasks simples",
+        "skills": [
+          "stack-específica"
+        ],
+        "responsibilities": [
+          "tasks simples sob revisão"
+        ],
+        "prohibitions": [
+          "sem revisão"
+        ],
+        "how": "1. Pega tasks simples/triviais guiadas. 2. Implementa sob template e Context7. 3. Sempre com revisão (proibido sem revisão). 4. Usa Ralph Loop enxuto (3 iterações).",
+        "usesContext7": true,
+        "modes": "ambos",
+        "note": "DEFINIDO",
+        "status": "DEFINIDO"
+      },
+      {
+        "id": "qa",
+        "tier": "local",
+        "type": "qa",
+        "friendlyName": "QA",
+        "cargo": "Especialista de QA",
+        "funcao": "Testes e gates especialistas da stack",
+        "role": "testes/QA especialista da stack",
+        "skills": [
+          "phpunit",
+          "playwright",
+          "eslint",
+          "stack-específica"
+        ],
+        "responsibilities": [
+          "gates",
+          "cobertura",
+          "char-tests em legado"
+        ],
+        "prohibitions": [
+          "approvar vermelho"
+        ],
+        "how": "1. Lê PRD + testes fixos. 2. Roda gates stack-específica via Context7 (phpunit/playwright/eslint + types). 3. Cobra cobertura (threshold PRD) e char-tests em legado. 4. Registra métricas no ledger. 5. Bloqueia ship se vermelho.",
+        "usesContext7": true,
+        "modes": "ambos",
+        "note": "DEFINIDO",
+        "status": "DEFINIDO"
+      },
+      {
+        "id": "security-specialist",
+        "tier": "local",
+        "type": "security",
+        "friendlyName": "Segurança",
+        "cargo": "Especialista de Segurança",
+        "funcao": "Pentest reverso especialista da stack/versão",
+        "role": "pentest reverso especialista da stack/versão",
+        "skills": [
+          "reverse-pentest",
+          "stack-específica"
+        ],
+        "responsibilities": [
+          "checar checklist",
+          "bloquear vuln",
+          "gravar SECURITY_LOG"
+        ],
+        "prohibitions": [
+          "ignorar item"
+        ],
+        "how": "1. Especialista stack/versão via Context7. 2. Roda checklist pentest reverso em cada alteração (gate). 3. Em PreCommit/PostToolUse bloqueia PR se vuln. 4. Grava SECURITY_LOG (item, severidade, correção, status). 5. Revisa secrets/logs.",
+        "usesContext7": true,
+        "modes": "ambos",
+        "note": "DEFINIDO",
+        "status": "DEFINIDO"
+      },
+      {
+        "id": "docs-specialist",
+        "tier": "local",
+        "type": "docs",
+        "friendlyName": "Doc Master",
+        "cargo": "Especialista de Documentação",
+        "funcao": "Gera/mantém AGENTS.md e PROJECT_CONTEXT do projeto",
+        "role": "AGENTS.md/PROJECT_CONTEXT por projeto",
+        "skills": [
+          "doc-gen",
+          "stack-específica"
+        ],
+        "responsibilities": [
+          "100% documentado"
+        ],
+        "prohibitions": [
+          "projeto sem AGENTS.md"
+        ],
+        "how": "1. Usa Context7 para stack. 2. Gera/mantém AGENTS.md + PROJECT_CONTEXT (fonte de verdade). 3. Em doc-gen: consome DOC_SYNC.json e documenta item a item (técnico+funcional+casos de uso). 4. Mantém docs/spec/plan/tasks atualizados. 5. Garante 100% documentado.",
+        "usesContext7": true,
+        "modes": "ambos",
+        "note": "DEFINIDO",
+        "status": "DEFINIDO"
+      }
+    ],
+    "example": [
+      {
+        "id": "domain-engine",
+        "tier": "local",
+        "type": "layer",
+        "friendlyName": "Motor do Domínio",
+        "cargo": "Engenheiro de Domínio",
+        "funcao": "Entities/VOs e serviços de cálculo",
+        "role": "EXAMPLE — motor domínio (gestor-projects)",
+        "scope": [
+          "app/Core/Domain/",
+          "tests/Unit/"
+        ],
+        "skills": [
+          "laravel",
+          "laravel-tdd",
+          "phpunit-tests",
+          "typescript"
+        ],
+        "responsibilities": [
+          "Entities/VOs",
+          "serviços"
+        ],
+        "prohibitions": [
+          "Illuminate em Domain",
+          "float dinheiro",
+          "sem teste primeiro"
+        ],
+        "how": "TDD estrito: 1. Define Entity/VO + Money (proíbe float). 2. Teste unitário antes. 3. Implementa serviço de cálculo em app/Core/Domain. 4. Nunca usa Illuminate em Domain.",
+        "usesContext7": true,
+        "modes": "ambos",
+        "note": "EXEMPLO",
+        "status": "DEFINIDO"
+      }
+    ]
+  },
+  "skills": {
+    "status": "DEFINIDO — gatilho e steps preenchidos a partir das conversas + JSON",
+    "schema": {
+      "id": "id",
+      "friendlyName": "nome amigável (legível)",
+      "tier": "global|local",
+      "trigger": "quando",
+      "description": "entrega",
+      "steps": [],
+      "sources": [],
+      "stack": [],
+      "usesContext7": "bool",
+      "harnessBinding": "VERIFICADO — ver harnesses.targets e docs/01-harnesses.md"
+    },
+    "plannedCatalog": [
+      "clean-architecture",
+      "tdd",
+      "eslint",
+      "phpunit",
+      "playwright",
+      "laravel",
+      "react",
+      "vue",
+      "angular",
+      "python",
+      "ts",
+      "tailwind",
+      "bootstrap",
+      "wordpress",
+      "proprietary-lang",
+      "reverse-pentest",
+      "doc-gen",
+      "char-tests",
+      "semantic-release",
+      "ci-cd",
+      "seo",
+      "i18n",
+      "performance",
+      "media-buying",
+      "design-system",
+      "ux-ui",
+      "design-patterns",
+      "interview",
+      "requirements",
+      "code-review",
+      "ralph-loop",
+      "pack-security",
+      "secrets",
+      "api-contracts",
+      "strategy",
+      "orchestration"
+    ],
+    "friendlyNames": {
+      "clean-architecture": {
+        "friendlyName": "Arquitetura Limpa",
+        "cargo": "Arquiteto de Referência",
+        "funcao": "Aplica fronteiras e camadas adaptadas ao projeto",
+        "gatilho": "ao criar/alterar estrutura de camadas ou definir fronteiras",
+        "steps": "1. Lê AGENTS.md/stack. 2. Aplica camadas clean adaptada (Domain→App→Infra). 3. Define fronteiras e dependências (proíbe Illuminate em Domain). 4. Gera/atualiza docs/plan/*.md."
+      },
+      "tdd": {
+        "friendlyName": "TDD",
+        "cargo": "Engenheiro de Testes",
+        "funcao": "Testes fixos de regra de negócio antes do código",
+        "gatilho": "antes de qualquer código (obrigatório)",
+        "steps": "1. Lê regra de negócio do PRD. 2. Escreve teste FIXO que valida exatamente a regra (RED). 3. Só então implementa código mínimo (GREEN). 4. Refatora. 5. Se teste falhar depois → corrige causa raiz; só altera teste se regra mudar."
+      },
+      "eslint": {
+        "friendlyName": "ESLint",
+        "cargo": "Guardador de Estilo",
+        "funcao": "Lint e padronização de código",
+        "gatilho": "em edição de arquivo (PostToolUse) e pré-ship",
+        "steps": "1. Roda linter da stack (eslint/pint). 2. Se erro → bloqueia e sugere correção. 3. Registra no ledger."
+      },
+      "phpunit": {
+        "friendlyName": "PHPUnit",
+        "cargo": "Testador PHP",
+        "funcao": "Testes unitários em PHP",
+        "gatilho": "em código PHP / gate verify",
+        "steps": "1. Roda phpunit com cobertura. 2. Verifica threshold do PRD. 3. Se vermelho → devolve."
+      },
+      "playwright": {
+        "friendlyName": "Playwright",
+        "cargo": "Testador E2E",
+        "funcao": "Testes end-to-end multi-navegador",
+        "gatilho": "em feature com UI/fluxo e2e",
+        "steps": "1. Roda testes e2e multi-navegador. 2. Se falha → registra."
+      },
+      "laravel": {
+        "friendlyName": "Laravel",
+        "cargo": "Especialista Laravel",
+        "funcao": "Padrões e docs Laravel (Context7)",
+        "gatilho": "quando projeto é Laravel (Context7)",
+        "steps": "1. Busca docs Laravel 13 via Context7. 2. Aplica padrões (VO Money, sem float, etc.)."
+      },
+      "react": {
+        "friendlyName": "React",
+        "cargo": "Especialista React",
+        "funcao": "Padrões e docs React (Context7)",
+        "gatilho": "quando frontend é React (Context7)",
+        "steps": "1. Busca docs React 19 via Context7. 2. Aplica padrões."
+      },
+      "vue": {
+        "friendlyName": "Vue",
+        "cargo": "Especialista Vue",
+        "funcao": "Padrões e docs Vue (Context7)",
+        "gatilho": "quando frontend é Vue (Context7)",
+        "steps": "1. Busca docs Vue via Context7."
+      },
+      "angular": {
+        "friendlyName": "Angular",
+        "cargo": "Especialista Angular",
+        "funcao": "Padrões e docs Angular (Context7)",
+        "gatilho": "quando frontend é Angular (Context7)",
+        "steps": "1. Busca docs Angular via Context7."
+      },
+      "python": {
+        "friendlyName": "Python",
+        "cargo": "Especialista Python",
+        "funcao": "Padrões e docs Python (Context7)",
+        "gatilho": "quando projeto é Python (Context7)",
+        "steps": "1. Busca docs Python/Django/FastAPI via Context7."
+      },
+      "ts": {
+        "friendlyName": "TypeScript",
+        "cargo": "Tipador",
+        "funcao": "Tipagem e padrões TypeScript",
+        "gatilho": "em código TypeScript",
+        "steps": "1. Aplica tipagem estrita, verifica types."
+      },
+      "tailwind": {
+        "friendlyName": "Tailwind",
+        "cargo": "Estilista Tailwind",
+        "funcao": "Tailwind v4 (Context7)",
+        "gatilho": "quando estilização é Tailwind (Context7)",
+        "steps": "1. Busca Tailwind v4 via Context7."
+      },
+      "bootstrap": {
+        "friendlyName": "Bootstrap",
+        "cargo": "Estilista Bootstrap",
+        "funcao": "Bootstrap CSS",
+        "gatilho": "quando estilização é Bootstrap",
+        "steps": "1. Aplica Bootstrap CSS."
+      },
+      "wordpress": {
+        "friendlyName": "WordPress",
+        "cargo": "Especialista WordPress",
+        "funcao": "Padrões e docs WordPress (Context7)",
+        "gatilho": "quando projeto é WordPress (Context7)",
+        "steps": "1. Busca docs WP via Context7."
+      },
+      "proprietary-lang": {
+        "friendlyName": "Linguagem Própria",
+        "cargo": "Especialista Proprietário",
+        "funcao": "Adapter para stack proprietária",
+        "gatilho": "quando stack é linguagem proprietária",
+        "steps": "1. Carrega adapter específico do plugin."
+      },
+      "reverse-pentest": {
+        "friendlyName": "Pentest Reverso",
+        "cargo": "Auditor de Segurança",
+        "funcao": "Checklist de vulnerabilidades conhecidas",
+        "gatilho": "em PreCommit/PostToolUse (security-gate) sempre",
+        "steps": "1. Roda checklist 20 itens (SQLi, XSS, CSRF, SSRF, upload, secrets...). 2. Se vuln → bloqueia + SECURITY_LOG."
+      },
+      "doc-gen": {
+        "friendlyName": "Gerador de Docs",
+        "cargo": "Documentarista",
+        "funcao": "Gera AGENTS.md/context",
+        "gatilho": "ao criar/atualizar AGENTS.md/PROJECT_CONTEXT ou no pipeline doc-gen",
+        "steps": "1. Consome DOC_SYNC.json. 2. Gera docs técnica/funcional item a item. 3. Atualiza via hook docs.sync."
+      },
+      "char-tests": {
+        "friendlyName": "Testes de Caracterização",
+        "cargo": "Cobridor de Legado",
+        "funcao": "Cobre legado antes de alterar",
+        "gatilho": "em legado antes de alterar",
+        "steps": "1. Escreve teste de caracterização que congela comportamento atual. 2. Só então altera."
+      },
+      "semantic-release": {
+        "friendlyName": "Release Semântico",
+        "cargo": "Liberador",
+        "funcao": "Commit/changelog/release",
+        "gatilho": "na fase Ship",
+        "steps": "1. Gera commit semântico (Conventional Commits pt-BR) + changelog + release."
+      },
+      "ci-cd": {
+        "friendlyName": "CI/CD",
+        "cargo": "Pipelineiro",
+        "funcao": "Build/deploy",
+        "gatilho": "em pipeline build/deploy",
+        "steps": "1. Roda build/deploy conforme provider (docker/aws/vercel etc.)."
+      },
+      "seo": {
+        "friendlyName": "SEO",
+        "cargo": "Otimizador de Busca",
+        "funcao": "Boas práticas de SEO",
+        "gatilho": "quando foco inclui SEO",
+        "steps": "1. Aplica boas práticas SEO."
+      },
+      "i18n": {
+        "friendlyName": "i18n",
+        "cargo": "Internacionalizador",
+        "funcao": "Strings externalizadas",
+        "gatilho": "quando i18n no escopo",
+        "steps": "1. Externaliza strings, verifica cobertura de idiomas."
+      },
+      "performance": {
+        "friendlyName": "Performance",
+        "cargo": "Otimizador",
+        "funcao": "Budgets e otimização",
+        "gatilho": "quando performance no escopo ou em verify",
+        "steps": "1. Verifica budgets (LCP, TTFB, queries N+1)."
+      },
+      "media-buying": {
+        "friendlyName": "Compra de Mídia",
+        "cargo": "Especialista de Mídia",
+        "funcao": "Métricas de mídia",
+        "gatilho": "quando compra de mídia no escopo",
+        "steps": "1. Coleta métricas de mídia."
+      },
+      "design-system": {
+        "friendlyName": "Design System",
+        "cargo": "Sistematizador de UI",
+        "funcao": "Tokens/componentes",
+        "gatilho": "quando UI consistente no escopo",
+        "steps": "1. Aplica tokens/componentes."
+      },
+      "ux-ui": {
+        "friendlyName": "UX/UI",
+        "cargo": "Experiência",
+        "funcao": "Heurísticas de UX",
+        "gatilho": "quando UX/UI no escopo",
+        "steps": "1. Aplica heurísticas UX."
+      },
+      "design-patterns": {
+        "friendlyName": "Design Patterns",
+        "cargo": "Modelador",
+        "funcao": "Padrões GoF/arquiteturais",
+        "gatilho": "ao modelar código",
+        "steps": "1. Aplica GoF/arquiteturais conforme plano do TechLead."
+      },
+      "interview": {
+        "friendlyName": "Entrevista",
+        "cargo": "Entrevistador",
+        "funcao": "Faz perguntas ao dev (PO)",
+        "gatilho": "no PO, fase spec",
+        "steps": "1. Roda 13 dimensões de entrevista, valida entendimento."
+      },
+      "requirements": {
+        "friendlyName": "Requisitos",
+        "cargo": "Levantador de Requisitos",
+        "funcao": "Levanta func/ não-func",
+        "gatilho": "no PO, após entrevista",
+        "steps": "1. Levanta funcionais/não-funcionais e critérios de aceite."
+      },
+      "code-review": {
+        "friendlyName": "Code Review",
+        "cargo": "Revisor",
+        "funcao": "Revisão técnica (Tech Lead)",
+        "gatilho": "no TechLead, revisão do squad",
+        "steps": "1. Revisa fronteiras, padrões, segurança. 2. Bloqueia sem aprovação."
+      },
+      "ralph-loop": {
+        "friendlyName": "Ralph Loop",
+        "cargo": "Loop de Execução",
+        "funcao": "Loop iterativo por task (.sh)",
+        "gatilho": "ao executar cada task delegada",
+        "steps": "1. Gera .sh por task (chat limpo). 2. Loop PLAN→ACT→EVALUATE→TERMINATE (3-5 iterações, mudanças cirúrgicas, compressão de histórico). 3. Valida em testes fixos."
+      },
+      "pack-security": {
+        "friendlyName": "Segurança de Pacotes",
+        "cargo": "Vigiador de Pacotes",
+        "funcao": "Valida pack confiável",
+        "gatilho": "antes de instalar pack",
+        "steps": "1. Valida supply-chain (npm/composer audit, assinatura). 2. Bloqueia se não confiável."
+      },
+      "secrets": {
+        "friendlyName": "Segredos",
+        "cargo": "Cofre",
+        "funcao": "Gestão de env/vault",
+        "gatilho": "em gestão de env/vault",
+        "steps": "1. Garante segredos em env/vault, nunca em código/log. 2. Roda varredura."
+      },
+      "api-contracts": {
+        "friendlyName": "Contratos de API",
+        "cargo": "Contratador",
+        "funcao": "Schema/OpenAPI",
+        "gatilho": "antes de implementar API",
+        "steps": "1. Define schema/OpenAPI/mensagem, versionado. 2. Valida no TDD."
+      },
+      "strategy": {
+        "friendlyName": "Estratégia",
+        "cargo": "Estrategista",
+        "funcao": "Documenta decisões",
+        "gatilho": "ao decidir arquitetura/estratégia",
+        "steps": "1. Documenta decisão no PRD/plan (techlead+PO)."
+      },
+      "orchestration": {
+        "friendlyName": "Orquestração",
+        "cargo": "Roteirizador",
+        "funcao": "Instrui quando chamar cada um",
+        "gatilho": "sempre — instrui quando chamar quem",
+        "steps": "1. Maestro lê evento e roteia agente/skill conforme tabela de orquestração. 2. Injeta arquivo de orquestração da 2ª interação em diante."
+      }
+    },
+    "context7Note": "Skills/agents locais usam Context7 para documentação versionada da stack do projeto (ex: Laravel 13, React 19).",
+    "globalBehavior": "SKILLS GLOBAIS atuam no SEGUNDO PLANO, ajudando a manter padronização/organização. PODEM ser chamadas pelo dev, mas o intuito é serem silenciosas/discretas (disparadas por preinstruções nas skills do projeto + hooks).",
+    "note": "Catálogo global proposto; cada skill é template instanciado/local especializado por projeto. Detalhar steps/sources depois.",
+    "items": []
+  },
+  "docs": {
+    "status": "DEFINIDO",
+    "schema": {
+      "id": "id",
+      "type": "template|context|standard|spec",
+      "path": "caminho",
+      "purpose": "para que",
+      "structure": []
+    },
+    "items": [
+      {
+        "id": "project-context",
+        "type": "context",
+        "path": "docs/PROJECT_CONTEXT.md",
+        "purpose": "contexto vivo do projeto",
+        "structure": [
+          "stack",
+          "convenções",
+          "estrutura",
+          "gates"
+        ]
+      },
+      {
+        "id": "agents-md",
+        "type": "context",
+        "path": "AGENTS.md",
+        "purpose": "fonte de verdade de stack/convenções",
+        "structure": [
+          "stack",
+          "convenções",
+          "estrutura",
+          "gates"
+        ]
+      },
+      {
+        "id": "prd",
+        "type": "standard",
+        "path": "docs/PRD.json + docs/PRD.md (espelhado)",
+        "purpose": "todas as tasks + contexto compartilhado; JSON é fonte para generator/dashboard, MD é leitura humana",
+        "structure": [
+          "metadata (projeto, stack, harness, data)",
+          "sharedContext (objetivos, personas, stack, padrões, restrições)",
+          "features[]",
+          "tasks[] {id, feature, what, why, acceptanceCriteria, difficulty, model, dependsOn, status, assignee, tokens, prompts}",
+          "nonFunctionalRequirements"
+        ]
+      },
+      {
+        "id": "orchestration-ledger",
+        "type": "standard",
+        "path": "docs/ORCHESTRATION.json + docs/ORCHESTRATION.md (espelhado)",
+        "purpose": "rastreabilidade o que/porquê/quando/quem/modelo/tokens/prompts/métricas — espelhado com PRD",
+        "structure": [
+          "task_id",
+          "what",
+          "why",
+          "when",
+          "developer",
+          "model",
+          "tokens",
+          "prompts",
+          "metrics",
+          "errors",
+          "changes",
+          "fixes",
+          "status",
+          "session_id",
+          "harness"
+        ]
+      },
+      {
+        "id": "security-log",
+        "type": "standard",
+        "path": "docs/SECURITY_LOG.json + docs/SECURITY_LOG.md (espelhado)",
+        "purpose": "erros/mudanças/correções de segurança",
+        "structure": [
+          "item",
+          "severidade",
+          "correção",
+          "status"
+        ]
+      }
+    ]
+  },
+  "hooks": {
+    "status": "DEFINIDO — 7 hooks planejados, todos harnesses devem implementar via adapter nativo (ver matriz 04-runtime)",
+    "schema": {
+      "id": "id",
+      "event": "evento",
+      "harness": "DEFERIDO",
+      "action": "dispara",
+      "description": "por que"
+    },
+    "planned": [
+      {
+        "id": "session.classify",
+        "event": "início de TODA session",
+        "action": "identifica novo / legado-mapeado / legado-sem-specs e roteia (init / analyze / sync)",
+        "description": "bootstrap de sessão (dayToDay.sessionBootstrap)"
+      },
+      {
+        "id": "session.personal-interview",
+        "event": "PRIMEIRA interação do usuário com o pack (first-run)",
+        "action": "roda entrevista pessoal e gera AGENTS.md GLOBAL",
+        "description": "onboarding / personalContext"
+      },
+      {
+        "id": "interaction.inject-orchestration",
+        "event": "toda interação (a partir da 2ª)",
+        "action": "injeta o arquivo de orquestração (estado do squad + roteamento) no contexto",
+        "description": "mantém squad ciente de quando chamar cada agent/skill (dayToDay.communication)"
+      },
+      {
+        "id": "security-gate",
+        "event": "PreCommit / PostToolUse",
+        "action": "roda security-specialist e BLOQUEIA se vulnerabilidade",
+        "description": "combinação pentest reverso"
+      },
+      {
+        "id": "ledger-record",
+        "event": "pós-alteração",
+        "action": "registra no ORCHESTRATION ledger (dev/model/tokens/prompts)",
+        "description": "orquestração de alterações"
+      },
+      {
+        "id": "docs-check",
+        "event": "pré-ship",
+        "action": "exige AGENTS.md + docs atualizados",
+        "description": "100% documentado"
+      },
+      {
+        "id": "docs.sync",
+        "event": "pós-alteração / pré-ship",
+        "action": "atualiza docs/DOC_SYNC.json (manifest de cobertura) conforme código",
+        "description": "docSync: garante 100% documentado item a item"
+      }
+    ],
+    "items": []
+  },
+  "events": {
+    "status": "DEFINIDO — todos harnesses usam todos os 4 eventos canônicos; mapear para hook nativo por harness ver docs/04-runtime.md matriz",
+    "schema": {
+      "id": "id",
+      "source": "quem emite",
+      "payload": "contrato",
+      "consumers": []
+    },
+    "planned": [
+      {
+        "id": "change.recorded",
+        "source": "orchestrator",
+        "payload": "session_id, harness, task_id, developer, model, tokens, prompts, metrics",
+        "consumers": [
+          "ledger",
+          "dashboard-futuro",
+          "control-center"
+        ]
+      },
+      {
+        "id": "security.violation",
+        "source": "security-specialist",
+        "payload": "item, severidade, arquivo",
+        "consumers": [
+          "SECURITY_LOG",
+          "hook gate",
+          "control-center"
+        ]
+      },
+      {
+        "id": "project.instantiated",
+        "source": "init/analyze pipeline",
+        "payload": "stack, squad gerado",
+        "consumers": [
+          "orchestrator",
+          "control-center",
+          "projectsRegistry"
+        ]
+      },
+      {
+        "id": "session.started",
+        "source": "watchdog",
+        "payload": "session_id, harness, pid",
+        "consumers": [
+          "trigger-dev (control-center)",
+          "projectsRegistry"
+        ]
+      }
+    ],
+    "items": []
+  },
+  "commands": {
+    "status": "PLANNING",
+    "schema": {
+      "id": "id",
+      "harness": "DEFERIDO",
+      "signature": "invocação",
+      "behavior": "faz"
+    },
+    "planned": [
+      {
+        "id": "spec-kit init",
+        "signature": "spec-kit init",
+        "behavior": "greenfield: PO entrevista -> docs + instancia squad local"
+      },
+      {
+        "id": "spec-kit analyze",
+        "signature": "spec-kit analyze [repo]",
+        "behavior": "legado: verifica docs, doc-gen, entrevista, instancia squad"
+      },
+      {
+        "id": "spec-kit verify",
+        "signature": "spec-kit verify",
+        "behavior": "roda qa + security + grava ledger"
+      },
+      {
+        "id": "spec-kit init-projects",
+        "signature": "spec-kit init-projects",
+        "behavior": "mapeia a pasta de projects: todos os projetos, stack, SDD?, repo, sessions, overview (projectsRegistry)"
+      },
+      {
+        "id": "spec-kit models refresh",
+        "signature": "spec-kit models refresh",
+        "behavior": "atualiza models/catalog.json (benchmarks SWE-bench, preços, speed) — alimenta a seleção de modelo do PO (F14; comando 5º, implementado na task T33)"
+      }
+    ],
+    "items": []
+  },
+  "integration": {
+    "dashboard": {
+      "status": "LATER",
+      "description": "Dashboard de controle/organização de gastos e monitoramento de uso. Consome ORCHESTRATION ledger (tokens, prompts, modelo, dev, métricas) e SECURITY_LOG.",
+      "relation": "DEFINIDO — consome PRD.json + ORCHESTRATION.json + SECURITY_LOG.json",
+      "dataSource": "governance.orchestrationLedger + governance.securityGovernanceFile"
+    },
+    "controlCenter": {
+      "status": "PENDENTE integração — central-de-controle DEFINIDA, spec-kit aguarda finalização",
+      "description": "Ver control-center.orchestration.json (central-de-controle, via de duas mãos). Quando a central finalizar modelCatalog/benchmarkEngine, o spec-kit deve ser atualizado: trocar models/catalog.json local por consumo via MCP/Central (GET /models/recommend) + remote-control via trigger-dev.",
+      "relation": "event-driven (change.recorded, security.violation, project.instantiated, session.started) ↔ central via subida (telemetria) e descida (recomendação/controle)",
+      "pendingAction": "Ao finalizar a central, atualizar dayToDay.poProtocol.modelSelection e models/catalog.json para consumir da central"
+    }
+  },
+  "pack": {
+    "status": "DEFINIDO",
+    "type": "npm multiharness",
+    "packageName": "spec-kit",
+    "description": "PROPOSTA — pacote npm: catálogo global + generators (squad local) + adapters de harness. CLI spec-kit.",
+    "structure": {
+      "bin/spec-kit": "CLI: init / analyze / verify",
+      "catalog/agents/": "templates GLOBAIS generalistas",
+      "catalog/skills/": "templates GLOBAIS por domínio/stack",
+      "generators/": "instancia squad LOCAL por spec/analysis (usa Context7)",
+      "harnesses/<alvo>/": "adapters — VERIFICADO (ver harnesses.targets), geram agents/skills/hooks/commands por harness",
+      "schemas/": "spec/PRD/ledger/context schemas"
+    },
+    "install": "injeta adapters nos harnesses configurados; copia catálogo base; cria comando spec-kit",
+    "instantiationFlow": "spec-kit init -> PO entrevista -> spec/PRD -> generators materializam squad local especialista -> escreve nos harnesses via adapter",
+    "note": "PROPOSTA — validar. Harnesses adiados."
+  },
+  "openQuestions": [
+    "FECHADO 2026-08-30 — harnesses cobertura (8 alvos verificados)",
+    "FECHADO 2026-08-30 — ledger formato: JSON+MD espelhado junto ao PRD",
+    "FECHADO 2026-08-30 — PRD formato: sempre JSON+MD (JSON shared context + dados do projeto + tasks/status, MD humano)",
+    "FECHADO 2026-08-30 — skills v1: todas as 36 do plano entram na v1",
+    "FECHADO 2026-08-30 — doc-gen pipeline definido: análise ponta-a-ponta → DOC_SYNC.json guia → multisubagents (1 func por agente)",
+    "FECHADO 2026-08-30 — agents hows e skills gatilhos/steps definidos",
+    "FECHADO 2026-08-30 — events: todos harnesses usam todos os 4 eventos canônicos (matriz por harness em 04-runtime)",
+    "FECHADO 2026-08-30 — comunicação multiagents/skills explicada por situações (07-flow-daytoday.md + 04-runtime matriz + skill orchestration)",
+    "FECHADO 2026-08-30 — ralph-loop explicado de forma simples (06-ralph-loop.md)",
+    "PENDENTE — PO base MODELOS/PESOS/BENCHMARKS: criar models/catalog.json versionado + cron semanal (estrutura abaixo)",
+    "PENDENTE — hooks de session inicial: matriz SessionStart por harness definida em 04-runtime, falta gerar adapters reais no pack npm"
+  ]
+}

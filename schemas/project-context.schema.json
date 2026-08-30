@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec-kit.dev/schemas/project-context.schema.json",
+  "title": "PROJECT_CONTEXT",
+  "type": "object",
+  "required": ["stack"],
+  "properties": {
+    "stack": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "conventions": { "type": "array", "items": { "type": "string" } },
+    "structure": { "type": "array", "items": { "type": "string" } },
+    "gates": { "type": "array", "items": { "type": "string" } },
+    "mode": { "enum": ["greenfield", "legacy"] }
+  }
+}

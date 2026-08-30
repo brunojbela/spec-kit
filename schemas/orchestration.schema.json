@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec-kit.dev/schemas/orchestration.schema.json",
+  "title": "ORCHESTRATION ledger",
+  "type": "object",
+  "required": ["project", "updatedAt", "entries"],
+  "properties": {
+    "project": { "type": "string" },
+    "updatedAt": { "type": "string" },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["session_id", "harness", "task_id", "developer", "model", "timestamp"],
+        "properties": {
+          "session_id": { "type": "string" },
+          "harness": { "type": "string" },
+          "task_id": { "type": "string" },
+          "developer": { "type": "string" },
+          "model": { "type": "string" },
+          "tokens": { "type": "number" },
+          "prompts": { "type": "number" },
+          "costUsd": { "type": "number" },
+          "durationMs": { "type": "number" },
+          "metrics": { "type": "object" },
+          "changes": { "type": "array", "items": { "type": "string" } },
+          "fixes": { "type": "array", "items": { "type": "string" } },
+          "errors": { "type": "array", "items": { "type": "string" } },
+          "fallback": { "type": "boolean" },
+          "timestamp": { "type": "string" }
+        }
+      }
+    }
+  }
+}
