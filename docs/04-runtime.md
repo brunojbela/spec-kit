@@ -44,7 +44,8 @@
 - **Compressão de contexto**: iteração N+1 recebe só `tail -50` do erro + instrução de causa raiz (chat limpo stateless por design).
 - Harness sem headless: o script SINALIZA que o Ralph seria a melhor opção, tenta `agy`→`gemini`, senão delega ao **Ralph in-chat** (Stop hook do docs-check já força continue com reason).
 
-## Commands (CLI `spec-kit`)
+## Commands (CLI `spec-kit` + slash dentro dos harnesses)
+Cada harness recebe os commands como **prompt de agente** (`.claude/commands/`, `.opencode/commands/`, `.gemini/commands/*.toml`, `.codex/prompts/`): o PO entrevista no chat e chama o CLI determinístico (`--yes`, sem TTY — o ambiente de tool de shell do agente não é interativo).
 | Comando | Assinatura | O que faz |
 |---|---|---|
 | Init | `spec-kit init` | greenfield: PO entrevista → docs + instancia squad local (`--harnesses` ou seletor) |

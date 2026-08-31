@@ -66,6 +66,15 @@ spec-kit analyze /caminho/do/repo
 
 Detecta a stack, preenche `DOC_SYNC.json` (Arqueólogo), gera char-tests e instancia o squad sem tocar no código.
 
+### Dentro do harness (opencode/Claude Code/Cursor/Codex/Gemini/Agy)
+
+O instalador gera **slash commands** em cada harness escolhido (`/spec-kit-init`, `/spec-kit-verify`, ...). Lá dentro, o comando é um **prompt para o agente**: ele conduz a entrevista no chat (papel PO) e executa o CLI determinístico com flags (`--yes`, sem TTY). Hooks rodam automaticamente em todos os momentos (session start, pré/pós-tool, stop). Fluxo típico:
+
+```
+abro o projeto no harness → digito /spec-kit-init → PO entrevista no chat →
+CLI instala squad/governança → /spec-kit-verify antes de cada ship
+```
+
 ### Gates
 
 ```sh

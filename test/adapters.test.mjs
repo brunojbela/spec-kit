@@ -104,3 +104,16 @@ test('matriz completa: 7 hooks × 8 harnesses = 56 pares mapeados', () => {
   }
   assert.equal(n, 56);
 });
+
+test('comandos instalados são prompts do AGENTE: entrevista no chat → CLI determinístico (--yes, sem TTY)', () => {
+  const { dir } = base('claude-code');
+  const init = readFileSync(join(dir, '.claude/commands/spec-kit-init.md'), 'utf8');
+  assert.match(init, /Você é o PO do spec-kit/);
+  assert.match(init, /Pergunte a STACK/);
+  assert.match(init, /--yes/, 'CLI determinístico p/ ambiente sem TTY');
+  const verify = readFileSync(join(dir, '.claude/commands/spec-kit-verify.md'), 'utf8');
+  assert.match(verify, /Exit 0|Exit 1/);
+  const { dir: g } = base('gemini-cli');
+  const toml = readFileSync(join(g, '.gemini/commands/spec-kit-init.toml'), 'utf8');
+  assert.match(toml, /prompt = """\nVocê é o PO/);
+});
