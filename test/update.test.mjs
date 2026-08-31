@@ -31,7 +31,7 @@ test('T34: update --force REESCREVE instruções corrompidas a partir da fonte',
   const dir = await installedProject();
   const po = join(dir, '.opencode/agents/po.md');
   writeFileSync(po, '# PO corrompido por drift local\n');
-  const res = update({ dir, force: true });
+  const res = await update({ dir, force: true });
   assert.equal(res.updated, true);
   const md = readFileSync(po, 'utf8');
   assert.ok(md.includes('CONCISÃO'), 'agente reescrito deve carregar a regra da fonte');
@@ -42,10 +42,10 @@ test('T34: update sem stale e sem force não reescreve; --check só reporta', as
   const dir = await installedProject();
   const po = join(dir, '.opencode/agents/po.md');
   writeFileSync(po, '# manual edit\n');
-  const noop = update({ dir });
+  const noop = await update({ dir });
   assert.equal(noop.updated, false);
   assert.match(readFileSync(po, 'utf8'), /manual edit/, 'sem force não toca');
-  const chk = update({ dir, check: true });
+  const chk = await update({ dir, check: true });
   assert.equal(chk.check, true);
   assert.equal(chk.stale, false);
 });
@@ -57,10 +57,10 @@ test('T34: stamp antigo → stale detectado; update migra versão do stamp', asy
   stamp.packVersion = '0.0.1';
   writeFileSync(sf, JSON.stringify(stamp, null, 2));
   assert.equal(isStale(dir).stale, true);
-  const chk = update({ dir, check: true });
+  const chk = await update({ dir, check: true });
   assert.equal(chk.stale, true);
   assert.equal(chk.installed, '0.0.1');
-  const res = update({ dir });
+  const res = await update({ dir });
   assert.equal(res.updated, true);
   assert.equal(res.from, '0.0.1');
   assert.equal(readStamp(dir).packVersion, packVersion());
@@ -74,7 +74,7 @@ test('T34: update NUNCA toca dados do usuário (PRD, ledger, DOC_SYNC)', async (
   const stamp = JSON.parse(readFileSync(join(dir, '.spec-kit/installed.json'), 'utf8'));
   stamp.packVersion = '0.0.1';
   writeFileSync(join(dir, '.spec-kit/installed.json'), JSON.stringify(stamp));
-  update({ dir });
+  await update({ dir });
   assert.equal(readFileSync(join(dir, 'docs/PRD.json'), 'utf8'), '{"sentinela":"prd-do-usuario"}');
   assert.equal(readFileSync(join(dir, 'docs/ORCHESTRATION.json'), 'utf8'), '{"sentinela":"ledger"}');
   assert.equal(readFileSync(join(dir, 'DOC_SYNC.json'), 'utf8'), '{"sentinela":"docsync"}');
@@ -86,7 +86,7 @@ test('T34: hooks idempotentes — update duplo não duplica entradas', async () 
   const before = JSON.parse(readFileSync(settings, 'utf8')).hooks.SessionStart.length;
   const stamp = join(dir, '.spec-kit/installed.json');
   const s = JSON.parse(readFileSync(stamp, 'utf8')); s.packVersion = '0.0.1'; writeFileSync(stamp, JSON.stringify(s));
-  update({ dir });
+  await update({ dir });
   const after = JSON.parse(readFileSync(settings, 'utf8')).hooks.SessionStart.length;
   assert.equal(after, before, 'SessionStart não pode crescer a cada update');
 });

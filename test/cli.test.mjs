@@ -15,7 +15,7 @@ test('--help lista os 6 comandos', () => {
 
 test('--version mostra versão do package', () => {
   const out = execFileSync('node', [bin, '--version'], { encoding: 'utf8' }).trim();
-  assert.equal(out, '0.2.0');
+  assert.equal(out, '0.2.1');
 });
 
 test('parser: init passa --dir --stack --yes para o handler', async () => {

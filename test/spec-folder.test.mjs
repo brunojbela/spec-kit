@@ -52,7 +52,7 @@ test('T35: update reescreve standards mas NUNCA toca queries/features', async ()
   const { writeFileSync } = await import('fs');
   writeFileSync(join(dir, '.spec/standards.json'), JSON.stringify(s));
   writeFileSync(join(dir, '.spec-kit/installed.json'), JSON.stringify({ ...JSON.parse(readFileSync(join(dir, '.spec-kit/installed.json'), 'utf8')), packVersion: '0.0.1' }));
-  const res = update({ dir });
+  const res = await update({ dir });
   assert.equal(res.updated, true);
   assert.equal(readFileSync(join(dir, '.spec/queries/queries.jsonl'), 'utf8'), qBefore, 'queries preservadas');
   assert.equal(readFileSync(join(dir, '.spec/features/F01.spec.md'), 'utf8'), '# spec do usuário', 'features preservadas');
