@@ -54,7 +54,7 @@ Manifest que lista todos os itens a documentar e seu status de cobertura. Hook `
 - Em greenfield, o mesmo pipeline roda após o `spec` (sem legado).
 
 ## Pasta `.spec/` — quartel-general do projeto (DEFINIDO 2026-08-30)
-Além de `docs/` (governança/histórico) e `.spec-kit/` (runtime), o kit cria `.spec/` para O QUE O PROJETO É:
+`.spec/` é o quartel-general ÚNICO do kit no projeto (v0.2.4 unificou o antigo `.spec-kit/`; migração automática no update): O QUE O PROJETO É + RUNTIME, separado de `docs/` (governança/histórico):
 
 | Arquivo | Conteúdo | Dono |
 |---|---|---|
@@ -62,6 +62,9 @@ Além de `docs/` (governança/histórico) e `.spec-kit/` (runtime), o kit cria `
 | `.spec/queries/queries.jsonl` | **memória de consultas Context7**: `{ts, agent, skill, harness, libraryId, query, sources}` — evita re-consultar, dá auditabilidade | agents/skills (append; update NUNCA toca) |
 | `.spec/features/<Fxx>.spec.md` | spec da feature (fase spec do SDD) | PO/squad (update não toca) |
 | `.spec/features/<Fxx>.plan.md` | plano de implementação (fase plan) | techlead (update não toca) |
+| `.spec/session.json` | runtime: `session_id` estável + harness atual (cross-harness) | hooks |
+| `.spec/installed.json` | stamp: packVersion, stack, harnesses (base do `update`) | kit |
+| `.spec/ralph/` | `<task>.sh` + prompt + logs do Ralph Loop | ralph |
 
 - `session.classify` injeta pointer para standards e queries.
 - Agents com `usesContext7` devem registrar a consulta em `queries.jsonl` **antes** de agir (regra no `how` gerado).

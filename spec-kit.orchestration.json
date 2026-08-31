@@ -14,12 +14,15 @@
     "projectFolder": {
       "path": ".spec/",
       "status": "DEFINIDO — 2026-08-30",
-      "purpose": "Quartel-general do projeto gerenciado pelo kit: padrões vigentes, memória de consultas (Context7) e specs/planos por feature — separado de docs/ (governança/histórico) e .spec-kit/ (runtime)",
+      "purpose": "Quartel-general ÚNICO do projeto gerenciado pelo kit: padrões vigentes, memória de consultas (Context7), specs/planos por feature e runtime (sessão, stamp, ralph) — separado de docs/ (governança/histórico). Unificou .spec-kit/ em .spec/ (v0.2.4, migração automática)",
       "structure": {
         ".spec/standards.json+md": "padrões VIGENTES deste projeto (PO seleciona do catálogo standards do kit na entrevista; update reescreve a parte gerida)",
         ".spec/queries/queries.jsonl": "memória de consultas: cada agent/skill que usa Context7 registra {ts, agent, skill, harness, libraryId, query, sourcesUsadas} — evita re-consultar e dá auditabilidade",
         ".spec/features/<Fxx>.spec.md": "spec da feature (o que/por quê/critérios) gerada na fase spec do fluxo SDD",
-        ".spec/features/<Fxx>.plan.md": "plano de implementação da feature (fase plan)"
+        ".spec/features/<Fxx>.plan.md": "plano de implementação da feature (fase plan)",
+        ".spec/session.json": "runtime: session_id estável + harness atual (cross-harness)",
+        ".spec/installed.json": "stamp do kit: packVersion, stack, harnesses (base do update)",
+        ".spec/ralph/": "Ralph Loop: <task>.sh/.prompt.md/.log por task"
       },
       "rules": [
         "update reescreve standards (cache da fonte) mas NUNCA queries/ nem features/ (dados do projeto)",
@@ -341,7 +344,7 @@
         "catalog/ (templates materializados)"
       ],
       "stamp": {
-        "file": ".spec-kit/installed.json",
+        "file": ".spec/installed.json",
         "fields": [
           "packVersion",
           "stack",
@@ -1847,7 +1850,7 @@
       {
         "id": "spec-kit update",
         "signature": "spec-kit update [--force|--check] [--harnesses a,b]",
-        "behavior": "organismo vivo: re-materializa catálogo da fonte (spec-kit.orchestration.json) e REESCREVE as instruções instaladas no projeto (agents/skills/hooks/commands dos harnesses registrados no stamp .spec-kit/installed.json); nunca toca dados do usuário (PRD/ledger/SECURITY_LOG/DOC_SYNC/AGENTS.md GLOBAL)"
+        "behavior": "organismo vivo: re-materializa catálogo da fonte (spec-kit.orchestration.json) e REESCREVE as instruções instaladas no projeto (agents/skills/hooks/commands dos harnesses registrados no stamp .spec/installed.json); nunca toca dados do usuário (PRD/ledger/SECURITY_LOG/DOC_SYNC/AGENTS.md GLOBAL)"
       }
     ],
     "items": []

@@ -1,6 +1,6 @@
 {
   "name": "spec-kit",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Spec-Driven Development Kit — catálogo global de agents/skills + generators de squad local especialista, multi-harness (8 alvos), governança PRD+ledger, Ralph Loop, docs 100%, pentest reverso.",
   "type": "module",
   "bin": {

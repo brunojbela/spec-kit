@@ -10,7 +10,7 @@ O spec-kit **nunca congela**: a fonte (`spec-kit.orchestration.json` + `catalog/
 | **Dados do usuário** | docs/PRD.json+md, docs/ORCHESTRATION.json+md, docs/SECURITY_LOG.json+md, DOC_SYNC.json, docs/technical/**, docs/functional/**, AGENTS.md GLOBAL, código-fonte | **NUNCA tocados** |
 
 ## Stamp de instalação
-`spec-kit init`/`analyze` gravam `.spec-kit/installed.json`:
+`spec-kit init`/`analyze` gravam `.spec/installed.json` (v0.2.4 unificou o antigo `.spec-kit/` — migração automática):
 ```json
 { "pack": "spec-kit", "packVersion": "0.1.0", "stack": ["laravel","react"], "harnesses": ["opencode","claude-code"], "installedAt": "...", "updatedAt": "..." }
 ```

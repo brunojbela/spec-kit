@@ -39,7 +39,7 @@
 | antigravity 2.0 | ❌ sem CLI | **fallback: `agy`** (auth/harness compartilhados; `GEMINI_API_KEY` p/ CI) **→ `gemini` → Ralph in-chat** | — | ✅ `Stop decision:"continue"` + `executionNum` |
 | antigravity IDE | ❌ sem CLI | idem 2.0 | — | ✅ idem |
 
-- O gerador `.spec-kit/ralph/<task>.sh` escolhe runner, modelo traduzido (`toNativeModel`) e `MAX` por dificuldade (trivial/fácil→3, médio→4, dif/extremo→5).
+- O gerador `.spec/ralph/<task>.sh` escolhe runner, modelo traduzido (`toNativeModel`) e `MAX` por dificuldade (trivial/fácil→3, médio→4, dif/extremo→5).
 - **Erro do agente ≠ teste vermelho**: `isAgentError` aborta cedo (exit 4) sem queimar iterações.
 - **Compressão de contexto**: iteração N+1 recebe só `tail -50` do erro + instrução de causa raiz (chat limpo stateless por design).
 - Harness sem headless: o script SINALIZA que o Ralph seria a melhor opção, tenta `agy`→`gemini`, senão delega ao **Ralph in-chat** (Stop hook do docs-check já força continue com reason).

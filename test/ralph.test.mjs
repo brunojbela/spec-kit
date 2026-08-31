@@ -39,8 +39,8 @@ test('T30: antigravity 2.0 SINALIZA sem headless + gera variantes agy/gemini + e
   assert.match(script, /agy/, 'fallback agy');
   assert.match(script, /decision:continue|Ralph IN-CHAT/, 'alternativa in-chat');
   assert.match(script, /exit 3/);
-  assert.ok(readFileSync(join(dir, '.spec-kit/ralph/T01.ralph'), 'utf8').includes('agy'));
-  assert.ok(readFileSync(join(dir, '.spec-kit/ralph/T01.gemini'), 'utf8').includes('gemini'));
+  assert.ok(readFileSync(join(dir, '.spec/ralph/T01.ralph'), 'utf8').includes('agy'));
+  assert.ok(readFileSync(join(dir, '.spec/ralph/T01.gemini'), 'utf8').includes('gemini'));
 });
 
 test('T30: task que falha 2x e passa na 3ª (AGENT_CMD fake) → concluída + usage no ledger', () => {
@@ -58,7 +58,7 @@ test('T30: task que falha 2x e passa na 3ª (AGENT_CMD fake) → concluída + us
   const counter = join(dir, 'n');
   const testCmd = `n=$(cat ${counter} 2>/dev/null || echo 0); n=$((n+1)); echo $n > ${counter}; [ $n -ge 3 ]`;
   execFileSync('bash', [script], { cwd: dir, env: { ...process.env, TEST_CMD: testCmd, AGENT_CMD: 'cat > /dev/null; echo hi' } });
-  assert.match(readFileSync(join(dir, '.spec-kit/ralph/T01.log'), 'utf8'), /verdes na iteracao 3/);
+  assert.match(readFileSync(join(dir, '.spec/ralph/T01.log'), 'utf8'), /verdes na iteracao 3/);
   assert.equal(JSON.parse(readFileSync(prdPath, 'utf8')).tasks[0].status, 'concluída');
 });
 
@@ -75,7 +75,7 @@ test('T30: erro do AGENTE (auth) aborta cedo sem queimar iterações (exit 4)', 
   try { execFileSync('bash', [script], { cwd: dir, env: { ...process.env, AGENT_CMD: '', RUNNER_BIN: fake, TEST_CMD: 'false' }, stdio: 'pipe' }); }
   catch (e) { code = e.status; }
   assert.equal(code, 4, 'deve abortar como erro de agente, não esgotar iterações');
-  assert.match(readFileSync(join(dir, '.spec-kit/ralph/T01.log'), 'utf8'), /ERRO DO AGENTE/);
+  assert.match(readFileSync(join(dir, '.spec/ralph/T01.log'), 'utf8'), /ERRO DO AGENTE/);
 });
 
 test('T30: MAX atingido (teste sempre vermelho, agente ok) → bloqueada, exit 1', () => {
@@ -91,7 +91,7 @@ test('T30: MAX atingido (teste sempre vermelho, agente ok) → bloqueada, exit 1
   writeFileSync(prdPath.replace('.json', '.md'), '# x');
   const [script] = generateRalphScripts({ prdPath, dir, harness: 'claude-code' });
   assert.throws(() => execFileSync('bash', [script], { cwd: dir, env: { ...process.env, AGENT_CMD: 'true', TEST_CMD: 'false' } }));
-  const log = readFileSync(join(dir, '.spec-kit/ralph/T01.log'), 'utf8');
+  const log = readFileSync(join(dir, '.spec/ralph/T01.log'), 'utf8');
   assert.equal((log.match(/iteracao/g) || []).length, 5);
   assert.match(log, /MAX_ITERS/);
   assert.equal(JSON.parse(readFileSync(prdPath, 'utf8')).tasks[0].status, 'bloqueada');
