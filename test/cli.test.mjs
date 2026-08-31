@@ -15,7 +15,7 @@ test('--help lista os 6 comandos', () => {
 
 test('--version mostra versão do package', () => {
   const out = execFileSync('node', [bin, '--version'], { encoding: 'utf8' }).trim();
-  assert.equal(out, '0.2.1');
+  assert.equal(out, '0.2.2');
 });
 
 test('parser: init passa --dir --stack --yes para o handler', async () => {
@@ -63,4 +63,12 @@ test('parser: init --harnesses chega como string csv', async () => {
   const program = buildProgram({ handlers: { init: async (o) => calls.push(o) } });
   await program.parseAsync(['node', 'spec-kit', 'init', '--stack', 'laravel', '--harnesses', 'opencode,claude-code']);
   assert.equal(calls[0].harnesses, 'opencode,claude-code');
+});
+
+test('bin mostra erro limpo (sem stack trace) quando falta stack em não-TTY', () => {
+  let err = '';
+  try { execFileSync('node', [bin, 'init', '--dir', '/tmp/nao-existe-x', '--yes'], { encoding: 'utf8', stdio: 'pipe' }); }
+  catch (e) { err = e.stderr; }
+  assert.match(err, /^spec-kit: stack vazio/);
+  assert.ok(!err.includes('Error:'), 'sem stack trace');
 });

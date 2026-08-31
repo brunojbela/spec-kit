@@ -28,7 +28,7 @@ test('T16: spec-kit init cria AGENTS.md + PRD.json válido + squad + DOC_SYNC + 
 });
 
 test('T16: init sem stack pede entrevista (erro claro)', async () => {
-  await assert.rejects(() => initRun({ dir: tmp(), stack: '' }), /entrevista/);
+  await assert.rejects(() => initRun({ dir: tmp(), stack: '' }), /stack vazio/);
 });
 
 test('T16: spec-kit analyze em legado gera DOC_SYNC + char-tests mock', () => {

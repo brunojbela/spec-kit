@@ -10,7 +10,7 @@ test('package.json é válido e nome=spec-kit com bin spec-kit', () => {
   const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
   assert.equal(pkg.name, 'spec-kit');
   assert.equal(pkg.bin['spec-kit'], 'bin/spec-kit.js');
-  assert.equal(pkg.version, '0.2.1');
+  assert.equal(pkg.version, '0.2.2');
 });
 
 test('bin/spec-kit.js existe e é executável', () => {

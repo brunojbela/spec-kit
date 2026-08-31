@@ -44,10 +44,11 @@ spec-kit --version
 
 ```sh
 cd /caminho/do/meu-projeto
-spec-kit init --stack laravel,react
+spec-kit init                    # interativo: pergunta stack, objetivo e harnesses
+spec-kit init --stack laravel,react --goal "API de pedidos" --harnesses opencode,claude-code
 ```
 
-Gera `AGENTS.md`, `PROJECT_CONTEXT.json`, `docs/PRD.json+md`, `DOC_SYNC.json`, `.spec/` (padrões vigentes + memória de consultas Context7 + specs/planos por feature), ledger e instala o squad especialista nos **8 harnesses (padrão)**. Para escolher:
+Gera `AGENTS.md`, `PROJECT_CONTEXT.json`, `docs/PRD.json+md`, `DOC_SYNC.json`, `.spec/` (padrões vigentes + memória de consultas Context7 + specs/planos por feature), ledger e instala o squad especialista. Sem flags, roda a **mini-entrevista** (stack → objetivo → seletor de harnesses). Erros saem limpos (`spec-kit: <motivo>`), sem stack trace.
 
 ```sh
 spec-kit init --stack laravel,react                    # seletor interativo (↑/↓, espaço, a=todos, enter)
