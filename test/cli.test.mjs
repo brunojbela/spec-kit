@@ -57,3 +57,10 @@ test('parser: models refresh roteia para modelsRefresh', async () => {
 test('comando inexistente sai com código != 0', () => {
   assert.throws(() => execFileSync('node', [bin, 'nao-existe'], { encoding: 'utf8', stdio: 'pipe' }));
 });
+
+test('parser: init --harnesses chega como string csv', async () => {
+  const calls = [];
+  const program = buildProgram({ handlers: { init: async (o) => calls.push(o) } });
+  await program.parseAsync(['node', 'spec-kit', 'init', '--stack', 'laravel', '--harnesses', 'opencode,claude-code']);
+  assert.equal(calls[0].harnesses, 'opencode,claude-code');
+});

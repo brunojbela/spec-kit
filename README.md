@@ -47,7 +47,13 @@ cd /caminho/do/meu-projeto
 spec-kit init --stack laravel,react
 ```
 
-Gera `AGENTS.md`, `PROJECT_CONTEXT.json`, `docs/PRD.json+md`, `DOC_SYNC.json`, ledger e instala o squad especialista nos 8 harnesses (`.opencode/`, `.claude/`, `.cursor/`, `.agents/` etc.).
+Gera `AGENTS.md`, `PROJECT_CONTEXT.json`, `docs/PRD.json+md`, `DOC_SYNC.json`, ledger e instala o squad especialista nos **8 harnesses (padrão)**. Para escolher apenas alguns:
+
+```sh
+spec-kit init --stack laravel,react --harnesses opencode,claude-code
+```
+
+IDs válidos: `opencode`, `claude-code`, `cursor`, `codex`, `gemini-cli`, `antigravity-2.0`, `antigravity-cli (agy)`, `antigravity-ide`.
 
 ### Projeto legado
 

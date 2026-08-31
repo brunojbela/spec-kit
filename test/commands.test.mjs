@@ -96,3 +96,11 @@ test('T16: spec-kit init-projects gera registry json+md', () => {
   assert.equal(reg.projects[0].sdd, true);
   assert.ok(existsSync(join(root, 'reg.md')));
 });
+
+test('T02: init --harnesses instala só nos selecionados; nome inválido lança', async () => {
+  const dir = tmp();
+  await initRun({ dir, stack: 'laravel', harnesses: 'opencode' });
+  assert.ok(existsSync(join(dir, '.opencode/agents/po.md')));
+  assert.ok(!existsSync(join(dir, '.claude/agents/po.md')), 'claude não deveria ser instalado');
+  await assert.rejects(() => initRun({ dir: tmp(), stack: 'laravel', harnesses: 'harness-fantasma' }), /harness desconhecido/);
+});
