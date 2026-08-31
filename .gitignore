@@ -3,3 +3,12 @@ node_modules/
 .spec-kit/
 npm-debug.log*
 .DS_Store
+
+# Governança local do desenvolvimento do pack (mantida fora do repo público)
+docs/PRD.json
+docs/PRD.md
+docs/ORCHESTRATION.json
+docs/ORCHESTRATION.md
+docs/SECURITY_LOG.json
+docs/SECURITY_LOG.md
+control-center.orchestration.json

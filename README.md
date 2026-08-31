@@ -47,10 +47,12 @@ cd /caminho/do/meu-projeto
 spec-kit init --stack laravel,react
 ```
 
-Gera `AGENTS.md`, `PROJECT_CONTEXT.json`, `docs/PRD.json+md`, `DOC_SYNC.json`, ledger e instala o squad especialista nos **8 harnesses (padrão)**. Para escolher apenas alguns:
+Gera `AGENTS.md`, `PROJECT_CONTEXT.json`, `docs/PRD.json+md`, `DOC_SYNC.json`, `.spec/` (padrões vigentes + memória de consultas Context7 + specs/planos por feature), ledger e instala o squad especialista nos **8 harnesses (padrão)**. Para escolher:
 
 ```sh
-spec-kit init --stack laravel,react --harnesses opencode,claude-code
+spec-kit init --stack laravel,react                    # seletor interativo (↑/↓, espaço, a=todos, enter)
+spec-kit init --stack laravel,react --harnesses opencode,claude-code  # direto pela linha de comando
+spec-kit init --stack laravel,react --yes              # sem pergunta: todos os 8
 ```
 
 IDs válidos: `opencode`, `claude-code`, `cursor`, `codex`, `gemini-cli`, `antigravity-2.0`, `antigravity-cli (agy)`, `antigravity-ide`.
@@ -76,6 +78,18 @@ spec-kit init-projects --projects-dir ~/projetos
 ```
 
 Gera `projects-registry.json+md` com stack, SDD?, repo e sessões por projeto (continuidade cross-harness via `session_id` estável).
+
+### Organismo vivo: atualização
+
+O kit evolui e os projetos instalados acompanham — instruções instaladas são **cache**, a fonte é o pack; dados do usuário (PRD, ledger, docs, memória) **nunca** são sobrescritos:
+
+```sh
+spec-kit update --check   # reporta se há atualização pendente
+spec-kit update           # reescreve instruções (agents/skills/hooks/commands) dos harnesses instalados
+spec-kit update --force   # reescreve mesmo com versões iguais
+```
+
+O hook `session.classify` detecta versão desatualizada no início de cada sessão e o próprio agente sugere o update. Ver [docs/11-living-updates.md](docs/11-living-updates.md).
 
 ### Catálogo de modelos
 

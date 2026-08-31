@@ -7,15 +7,15 @@ import { buildProgram } from '../lib/cli.js';
 const bin = join(import.meta.dirname, '..', 'bin/spec-kit.js');
 const help = execFileSync('node', [bin, '--help'], { encoding: 'utf8' });
 
-test('--help lista os 5 comandos', () => {
-  for (const cmd of ['init', 'analyze', 'verify', 'init-projects', 'models']) {
+test('--help lista os 6 comandos', () => {
+  for (const cmd of ['init', 'analyze', 'verify', 'init-projects', 'update', 'models']) {
     assert.match(help, new RegExp(`^\\s+${cmd}`, 'm'), `falta comando ${cmd}`);
   }
 });
 
 test('--version mostra versão do package', () => {
   const out = execFileSync('node', [bin, '--version'], { encoding: 'utf8' }).trim();
-  assert.equal(out, '0.1.0');
+  assert.equal(out, '0.2.0');
 });
 
 test('parser: init passa --dir --stack --yes para o handler', async () => {

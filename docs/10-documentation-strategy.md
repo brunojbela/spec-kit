@@ -52,3 +52,22 @@ Manifest que lista todos os itens a documentar e seu status de cobertura. Hook `
 ## Quem faz
 - **Arqueólogo** (Análise Fase 1) + **Documentista/Doc Master** (orquestra Fase 2) + multisubagents especialistas.
 - Em greenfield, o mesmo pipeline roda após o `spec` (sem legado).
+
+## Pasta `.spec/` — quartel-general do projeto (DEFINIDO 2026-08-30)
+Além de `docs/` (governança/histórico) e `.spec-kit/` (runtime), o kit cria `.spec/` para O QUE O PROJETO É:
+
+| Arquivo | Conteúdo | Dono |
+|---|---|---|
+| `.spec/standards.json+md` | **padrões vigentes** do projeto (PO seleciona do catálogo `standards` do kit na entrevista) | kit (update reescreve) |
+| `.spec/queries/queries.jsonl` | **memória de consultas Context7**: `{ts, agent, skill, harness, libraryId, query, sources}` — evita re-consultar, dá auditabilidade | agents/skills (append; update NUNCA toca) |
+| `.spec/features/<Fxx>.spec.md` | spec da feature (fase spec do SDD) | PO/squad (update não toca) |
+| `.spec/features/<Fxx>.plan.md` | plano de implementação (fase plan) | techlead (update não toca) |
+
+- `session.classify` injeta pointer para standards e queries.
+- Agents com `usesContext7` devem registrar a consulta em `queries.jsonl` **antes** de agir (regra no `how` gerado).
+- API: `lib/spec-folder.js` (`initSpecFolder`, `recordQuery`, `readQueries`, `writeFeatureSpec`).
+
+## Regra permanente: docs sempre atualizadas (`standards.docsAlwaysOn`)
+> QUALQUER mudança no spec-kit (código, spec, catálogo, padrões) EXIGE atualização da documentação do projeto no mesmo commit: `docs/NN-*.md` afetados, README se mudou uso, catálogo via `materialize`, entrada no ledger. **Documentação desatualizada = task não concluída** (docs-check).
+
+Vale para o próprio kit (dogfooding) e para todo projeto que o usa — está nos agents `docs-specialist`/`generalist-docs` e no fluxo de revisão do techlead.

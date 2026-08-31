@@ -17,7 +17,8 @@ function allMds(dir, base = dir, acc = []) {
 test('T32: _sidebar linka todos os mds do site (agents, skills, fundamentos, PRD, README)', () => {
   const sidebar = readFileSync(join(DOCS, '_sidebar.md'), 'utf8');
   const readme = existsSync(join(DOCS, 'README.md')) ? readFileSync(join(DOCS, 'README.md'), 'utf8') : '';
-  const mds = allMds(DOCS).filter((m) => !m.startsWith('/technical/') && !m.startsWith('/functional/') && m !== '/_sidebar.md');
+  const DEV_ONLY = ['/PRD.md', '/ORCHESTRATION.md', '/SECURITY_LOG.md']; // governança local (gitignored)
+  const mds = allMds(DOCS).filter((m) => !m.startsWith('/technical/') && !m.startsWith('/functional/') && m !== '/_sidebar.md' && !DEV_ONLY.includes(m));
   const missing = mds.filter((m) => !sidebar.includes(`(${m.slice(1)})`) && !readme.includes(`(${m.slice(1)})`) && !readme.includes(m.slice(1)));
   assert.deepEqual(missing, [], `sem link: ${missing.join(', ')}`);
 });

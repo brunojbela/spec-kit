@@ -11,6 +11,7 @@
   - [08-personal-context](08-personal-context.md)
   - [09-projects-registry](09-projects-registry.md)
   - [10-documentation-strategy](10-documentation-strategy.md)
+  - [11-living-updates](11-living-updates.md)
 
 - **Agents (um por arquivo)**
   - [Maestro](agents/orchestrator.md)

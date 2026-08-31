@@ -10,7 +10,23 @@
     "updatedAt": "2026-08-28",
     "description": "Kit SDD multi-stack/multi-harness. Modelo de 2 camadas: (1) catálogo GLOBAL de agents/skills GENERALISTAS (templates); (2) agents/skills LOCAIS por projeto, 100% ESPECIALISTAS, organizados em SQUAD (PO, techlead, dev senior/pleno/junior, qa, security, docs) usando Context7 para docs específicas de stack/versão. Spec gerado por agente PO que ENTREVISTA o dev. Governança (PRD + ledger) alimenta dashboard. Pentest reverso combinado. Harnesses DEFERIDOS (owner fornece depois). Tudo planejado — nada implementado.",
     "scopeDecision": "EM_ABERTO — definir junto com o owner durante a conversa",
-    "notes": "Arquivo evolutivo. Itens marcados PROPOSTA/EXAMPLE são ilustrações, não decisões. Arquivo irmão: control-center.orchestration.json (deferido)."
+    "notes": "Arquivo evolutivo. Itens marcados PROPOSTA/EXAMPLE são ilustrações, não decisões. Arquivo irmão: control-center.orchestration.json (deferido).",
+    "projectFolder": {
+      "path": ".spec/",
+      "status": "DEFINIDO — 2026-08-30",
+      "purpose": "Quartel-general do projeto gerenciado pelo kit: padrões vigentes, memória de consultas (Context7) e specs/planos por feature — separado de docs/ (governança/histórico) e .spec-kit/ (runtime)",
+      "structure": {
+        ".spec/standards.json+md": "padrões VIGENTES deste projeto (PO seleciona do catálogo standards do kit na entrevista; update reescreve a parte gerida)",
+        ".spec/queries/queries.jsonl": "memória de consultas: cada agent/skill que usa Context7 registra {ts, agent, skill, harness, libraryId, query, sourcesUsadas} — evita re-consultar e dá auditabilidade",
+        ".spec/features/<Fxx>.spec.md": "spec da feature (o que/por quê/critérios) gerada na fase spec do fluxo SDD",
+        ".spec/features/<Fxx>.plan.md": "plano de implementação da feature (fase plan)"
+      },
+      "rules": [
+        "update reescreve standards (cache da fonte) mas NUNCA queries/ nem features/ (dados do projeto)",
+        "session.classify injeta pointer: padrões em .spec/standards.md, consultas em .spec/queries/",
+        "agents com usesContext7 DEVEM registrar consulta feita em queries.jsonl antes de agir"
+      ]
+    }
   },
   "concept": {
     "status": "COLETANDO",
@@ -316,6 +332,42 @@
       "path": "docs/SECURITY_LOG.json + docs/SECURITY_LOG.md (espelhado)",
       "purpose": "erros/mudanças/correções de segurança",
       "status": "DEFINIDO"
+    },
+    "selfUpdate": {
+      "status": "DEFINIDO — 2026-08-30",
+      "principle": "spec-kit é organismo vivo: instruções instaladas em projetos são CACHE; a fonte é spec-kit.orchestration.json + catalog/. Update força a reescrita do cache a partir da fonte.",
+      "sourceOfTruth": [
+        "spec-kit.orchestration.json (agents/skills/hooks/events/commands)",
+        "catalog/ (templates materializados)"
+      ],
+      "stamp": {
+        "file": ".spec-kit/installed.json",
+        "fields": [
+          "packVersion",
+          "stack",
+          "harnesses",
+          "installedAt",
+          "updatedAt"
+        ]
+      },
+      "rewrite": [
+        "agents por harness (squad local regenerado com Context7 da stack gravada no stamp)",
+        "skills por stack (instanciação local)",
+        "hooks/settings por harness (matriz nativa)",
+        "commands por harness",
+        "wiring squad↔skills no AGENTS.md (só a seção gerida pelo kit)"
+      ],
+      "neverTouch": [
+        "docs/PRD.json+md",
+        "docs/ORCHESTRATION.json+md",
+        "docs/SECURITY_LOG.json+md",
+        "DOC_SYNC.json",
+        "docs/technical/** e docs/functional/**",
+        "AGENTS.md GLOBAL (memória viva — agents atualizam, update não sobrescreve)",
+        "código-fonte do projeto"
+      ],
+      "detection": "session.classify compara stamp.packVersion vs package.json do pack; stale → notifica e sugere spec-kit update (sem bloquear)",
+      "force": "--force reescreve mesmo com versões iguais (ex.: catálogo editado localmente); --check só reporta"
     }
   },
   "standards": {
@@ -422,7 +474,17 @@
       "docs atualizados (AGENTS.md/context)",
       "ledger registrado",
       "review aprovado"
-    ]
+    ],
+    "conciseness": {
+      "rule": "CONCISÃO (obrigatória em TODO código escrito ou revisto): nunca código verboso ou extenso por hábito. Direto ao ponto — methods/functions simples, curtos, uma responsabilidade, legíveis de primeira, nomes óbvios, sem dead code, sem abstração desnecessária, sem comentários redundantes. Sempre focando em RESOLVER o problema: a solução mais curta e correta que passa nos testes FIXOS vence.",
+      "enforcement": "presente em TODOS os agents (how) e skills (steps) via materialize/generator; techlead e code-review barram violação; ESLint/format aplicam na stack",
+      "status": "DEFINIDO — 2026-08-30"
+    },
+    "docsAlwaysOn": {
+      "rule": "QUALQUER mudança no spec-kit (código, spec, catálogo, padrões) EXIGE atualização da documentação do projeto no mesmo commit: docs/NN-*.md afetados, README se mudou uso, catálogo via materialize, e registro no ledger. Documentação desatualizada = task NÃO concluída (docs-check).",
+      "enforcement": "docs-check (DOC_SYNC) + regra nos agents docs-specialist/generalist-docs + revisão techlead",
+      "status": "DEFINIDO — 2026-08-30"
+    }
   },
   "dayToDay": {
     "status": "DEFINIDO",
@@ -1781,6 +1843,11 @@
         "id": "spec-kit models refresh",
         "signature": "spec-kit models refresh",
         "behavior": "atualiza models/catalog.json (benchmarks SWE-bench, preços, speed) — alimenta a seleção de modelo do PO (F14; comando 5º, implementado na task T33)"
+      },
+      {
+        "id": "spec-kit update",
+        "signature": "spec-kit update [--force|--check] [--harnesses a,b]",
+        "behavior": "organismo vivo: re-materializa catálogo da fonte (spec-kit.orchestration.json) e REESCREVE as instruções instaladas no projeto (agents/skills/hooks/commands dos harnesses registrados no stamp .spec-kit/installed.json); nunca toca dados do usuário (PRD/ledger/SECURITY_LOG/DOC_SYNC/AGENTS.md GLOBAL)"
       }
     ],
     "items": []
